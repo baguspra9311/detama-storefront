@@ -177,10 +177,18 @@ export class CheckoutParent {
 }
 
 // Global initialization for script tag usage
-window.addEventListener('DOMContentLoaded', () => {
+function initDetamaCheckout() {
+  if (window.DetamaCheckout) return; // Prevent double init
   const app = new CheckoutParent();
   app.start();
   // Expose to window for debugging if needed
   // @ts-ignore
   window.DetamaCheckout = app;
-});
+}
+
+if (document.readyState === 'loading') {
+  window.addEventListener('DOMContentLoaded', initDetamaCheckout);
+} else {
+  // If the document is already loaded (e.g. injected via Scalev builder), init immediately
+  initDetamaCheckout();
+}

@@ -1,9 +1,15 @@
 ---
-import FullPageLayout from '../../layouts/FullPageLayout.astro';
-import '../../styles/checkout-parent.css';
+import FragmentLayout from '../../layouts/FragmentLayout.astro';
 ---
 
-<FullPageLayout title="Checkout | Detama Storefront" description="Selesaikan pesanan Anda">
+<!-- 
+  Menggunakan FragmentLayout agar saat di-build, output HTML tidak mengandung tag <html>, <head>, dan <body>.
+  Ganti URL di bawah dengan URL aset production Anda di Cloudflare Pages.
+-->
+<FragmentLayout 
+  stylesheetUrl="https://assets.detama.id/checkout-parent.css"
+  scriptUrl="https://assets.detama.id/checkout-parent-bundle.js"
+>
   
   <div class="checkout-wrapper">
     
@@ -81,6 +87,4 @@ import '../../styles/checkout-parent.css';
     </div>
   </div>
 
-  <!-- Build checkout parent script using Vite -->
-  <script src="/checkout-parent-bundle.js" is:inline></script>
-</FullPageLayout>
+</FragmentLayout>

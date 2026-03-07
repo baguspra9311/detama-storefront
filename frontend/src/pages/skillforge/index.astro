@@ -1,0 +1,29 @@
+---
+/**
+ * SkillForge Landing Page Fragment
+ * Outputs a bare HTML fragment for Scalev injection.
+ */
+import FragmentLayout from '../../layouts/FragmentLayout.astro';
+import { skillForgeProducts } from '../../data/products';
+
+const CDN_BASE = 'https://cdn.detama.id';
+---
+
+<FragmentLayout
+  stylesheetUrl={`${CDN_BASE}/css/landing.css`}
+  scriptUrl={`${CDN_BASE}/js/landing-app.js`}
+>
+  <section id="skillforge-hero" class="hero-section">
+    <h2>SkillForge</h2>
+    <p>Master the art of online selling with expert-led courses.</p>
+  </section>
+
+  <section id="skillforge-products" class="product-grid-section">
+    <!-- ProductGrid component will be built in Phase 4 -->
+    <p>Course catalog placeholder — {skillForgeProducts.length} courses available.</p>
+  </section>
+
+  <aside id="skillforge-cart" class="cart-drawer">
+    <!-- CartDrawer component will be built in Phase 4 -->
+  </aside>
+</FragmentLayout>

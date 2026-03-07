@@ -1,0 +1,19 @@
+name = "detama-api"
+main = "src/index.ts"
+compatibility_date = "2025-12-01"
+
+# KV Namespace for storing purchase events & validation cache
+# After `wrangler login`, create with: wrangler kv namespace create KV_PURCHASES
+[[kv_namespaces]]
+binding = "KV_PURCHASES"
+id = "1279b0c6e0c147ee8865d4baa0f6ec0f"
+
+
+# Public environment variables
+[vars]
+ALLOWED_ORIGINS = "https://detama.id,https://kelasnyatama.com"
+
+# Secrets — set via `wrangler secret put <NAME>` (NEVER commit actual values):
+# SCALEV_SIGNING_SECRET  - Scalev HMAC signing secret (Scalev dashboard > Developers > Webhooks)
+# FONNTE_TOKEN           - Fonnte WhatsApp validation API token
+# QEV_API_KEY            - quickemailverification.com API key

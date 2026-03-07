@@ -1,0 +1,25 @@
+{
+  "name": "@detama/frontend",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro check && astro build",
+    "build:checkout-page": "vite build --config vite.checkout.config.ts",
+    "build:all": "npm run build:checkout-page && astro check && astro build",
+    "preview": "astro preview",
+    "typecheck": "astro check && tsc --noEmit"
+  },
+  "dependencies": {
+    "@astrojs/check": "^0.9.0",
+    "@detama/shared": "*",
+    "@tailwindcss/vite": "^4.0.0",
+    "astro": "^5.5.0",
+    "tailwindcss": "^4.0.0",
+    "typescript": "^5.7.0"
+  },
+  "devDependencies": {
+    "@types/node": "^25.3.5"
+  }
+}

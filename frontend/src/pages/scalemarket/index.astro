@@ -1,0 +1,31 @@
+---
+/**
+ * ScaleMarket Landing Page Fragment
+ * This outputs a bare HTML fragment (no <html>/<body>)
+ * to be pasted into Scalev's Custom HTML component.
+ */
+import FragmentLayout from '../../layouts/FragmentLayout.astro';
+import { scaleMarketProducts } from '../../data/products';
+
+// CDN URLs will be updated after the first build
+const CDN_BASE = 'https://cdn.detama.id';
+---
+
+<FragmentLayout
+  stylesheetUrl={`${CDN_BASE}/css/landing.css`}
+  scriptUrl={`${CDN_BASE}/js/landing-app.js`}
+>
+  <section id="scalemarket-hero" class="hero-section">
+    <h2>ScaleMarket</h2>
+    <p>Premium Scalev themes & tools to supercharge your online store.</p>
+  </section>
+
+  <section id="scalemarket-products" class="product-grid-section">
+    <!-- ProductGrid component will be built in Phase 4 -->
+    <p>Product grid placeholder — {scaleMarketProducts.length} products available.</p>
+  </section>
+
+  <aside id="scalemarket-cart" class="cart-drawer">
+    <!-- CartDrawer component will be built in Phase 4 -->
+  </aside>
+</FragmentLayout>

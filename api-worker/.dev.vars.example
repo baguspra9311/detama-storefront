@@ -1,0 +1,7 @@
+# Cloudflare Worker local dev variables
+# Copy to .dev.vars (untracked) and fill in real values
+# Used by: wrangler dev
+
+SCALEV_SIGNING_SECRET=your_scalev_hmac_signing_secret_here
+FONNTE_TOKEN=your_fonnte_api_token_here
+QEV_API_KEY=your_quickemailverification_api_key_here

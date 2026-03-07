@@ -1,0 +1,25 @@
+---
+/**
+ * FragmentLayout — Outputs ONLY the inner content.
+ *
+ * No <!DOCTYPE>, <html>, <head>, or <body> tags.
+ * Use this for HTML fragments that will be pasted inside
+ * Scalev's Custom HTML components.
+ *
+ * The output is just <section>-level content + <link>/<script> references.
+ */
+export interface Props {
+  /** Optional CSS file URL on cdn.detama.id */
+  stylesheetUrl?: string;
+  /** Optional JS file URL on cdn.detama.id */
+  scriptUrl?: string;
+}
+
+const { stylesheetUrl, scriptUrl } = Astro.props;
+---
+
+{stylesheetUrl && <link rel="stylesheet" href={stylesheetUrl} />}
+
+<slot />
+
+{scriptUrl && <script defer src={scriptUrl}></script>}

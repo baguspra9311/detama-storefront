@@ -1,0 +1,113 @@
+/* =========================================================================
+   Checkout Iframe CSS
+   Injected into the Scalev form's <head> at runtime by checkout.ts.
+   All !important overrides are REQUIRED — Scalev uses Vuetify which has
+   high-specificity defaults we must override to control the layout.
+   ========================================================================= */
+
+/* 1. Theme Variables */
+:root {
+  --checkout-bg: #ffffff;
+  --checkout-text: #1a1a1a;
+  --checkout-border: #e2e8f0;
+  --checkout-primary: #111827; /* Default dark for CTA */
+  --checkout-primary-text: #ffffff;
+  --checkout-error: #ef4444;
+  --checkout-success: #10b981;
+}
+
+/* Dark theme — toggled via .checkout-dark-theme class on <html> by checkout.ts */
+.checkout-dark-theme {
+  --checkout-bg: #111827; /* Tailwind gray-900 */
+  --checkout-text: #f9fafb; /* Tailwind gray-50 */
+  --checkout-border: #374151; /* Tailwind gray-700 */
+  --checkout-primary: #f9fafb;
+  --checkout-primary-text: #111827;
+}
+
+/* 2. Global Resets & Body Theme */
+body, html, #app, .v-application, .v-application--wrap {
+  background-color: var(--checkout-bg) !important;
+  color: var(--checkout-text) !important;
+  font-family: inherit !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  min-height: auto !important; /* Prevent Scalev from forcing 100vh */
+}
+
+/* Hide typical Scalev background colors */
+.bg-gray-50, .bg-white {
+  background-color: transparent !important;
+}
+
+/* 3. Hide Unnecessary Scalev Chrome 
+   We hide headers, footers, sticky carts, and navigation bars because 
+   the Parent wrapper handles the sticky CTA and main Page Header.
+*/
+header, 
+footer,
+.sclv-header,
+.v-toolbar,
+.v-bottom-navigation,
+.sclv-sticky-bottom,
+.sclv-floating-cart,
+.sclv-footer,
+.v-footer {
+  display: none !important;
+}
+
+/* Optional: hide Scalev native totals if Parent shows them.
+   For Phase 2a we might keep them visible until 2b is full,
+   but we'll hide standard promotional banners.
+*/
+.sclv-promo-banner,
+.sclv-social-proof {
+  display: none !important;
+}
+
+/* 4. Form Inputs Alignment */
+input, select, textarea {
+  background-color: var(--checkout-bg) !important;
+  color: var(--checkout-text) !important;
+  border: 1px solid var(--checkout-border) !important;
+  border-radius: 8px !important;
+  padding: 12px 16px !important;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease !important;
+}
+
+input:focus, select:focus, textarea:focus {
+  outline: none !important;
+  border-color: var(--checkout-primary) !important;
+  box-shadow: 0 0 0 1px var(--checkout-primary) !important;
+}
+
+/* Custom error state handled by our Validators */
+.is-invalid-input {
+  border-color: var(--checkout-error) !important;
+}
+
+/* Icons for validation (injected by validators) */
+.validation-icon {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 20px;
+  height: 20px;
+}
+.validation-icon.success { color: var(--checkout-success); }
+.validation-icon.error { color: var(--checkout-error); }
+
+/* 5. Scalev Primary Buttons */
+/* Just in case users click native buttons manually */
+.v-btn--is-elevated {
+  box-shadow: none !important;
+}
+
+.v-btn.primary, .v-btn.bg-primary {
+  background-color: var(--checkout-primary) !important;
+  color: var(--checkout-primary-text) !important;
+  border-radius: 8px !important;
+  text-transform: none !important;
+  font-weight: 600 !important;
+}

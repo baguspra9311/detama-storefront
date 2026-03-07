@@ -1,0 +1,8 @@
+{
+  "name": "@detama/shared",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "main": "./types/messages.ts",
+  "types": "./types/messages.ts"
+}

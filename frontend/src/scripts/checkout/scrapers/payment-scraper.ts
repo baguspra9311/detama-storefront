@@ -1,5 +1,5 @@
 import type { PaymentOption } from '@shared/types/messages';
-import { SELECTORS } from '../constants';
+import { SELECTORS, TIMING } from '../constants';
 
 export class PaymentScraper {
   /**
@@ -8,27 +8,20 @@ export class PaymentScraper {
   public scrapeAll(): PaymentOption[] {
     const options: PaymentOption[] = [];
 
-    // Scalev payment methods are typically rendered in lists
-    const container = document.querySelector(SELECTORS.PAYMENT_WRAPPER.primary)
-      || document.querySelector(SELECTORS.PAYMENT_WRAPPER.fallback);
-
-    if (!container) {
-      console.warn('[PaymentScraper] Payment container not found.');
+    const items = document.querySelectorAll(SELECTORS.PAYMENT_OPTION);
+    if (!items || items.length === 0) {
+      console.warn('[PaymentScraper] No payment items found.');
       return options;
     }
 
-    const items = container.querySelectorAll(
-      SELECTORS.PAYMENT_ITEM.primary + ', ' + SELECTORS.PAYMENT_ITEM.fallback
-    );
-
     items.forEach((item, index) => {
       // Name
-      const nameNode = item.querySelector('.sclv-text-body-bold, .payment-name, h4, span.font-bold');
+      const nameNode = item.querySelector(SELECTORS.PAYMENT_OPTION_NAME);
       const name = nameNode?.textContent?.trim() || `Payment Method ${index + 1}`;
 
-      // ID (from an input value or data attribute)
+      // ID (from an input value or assuming it maps directly if no input)
       const inputEl = item.querySelector('input[type="radio"]') as HTMLInputElement;
-      const id = inputEl?.value || item.getAttribute('data-value') || name;
+      const id = inputEl?.value || name; // Fallback to name if ID is missing
 
       // Icon
       const imgEl = item.querySelector('img');
@@ -67,13 +60,8 @@ export class PaymentScraper {
    * Simulates clicking/selecting a specific payment method.
    */
   public selectMethod(paymentIdOrName: string): boolean {
-    const container = document.querySelector(SELECTORS.PAYMENT_WRAPPER.primary)
-      || document.querySelector(SELECTORS.PAYMENT_WRAPPER.fallback);
-
-    if (!container) return false;
-
-    // We'll look for input.value === paymentIdOrName first, then visible text 
-    const inputs = Array.from(container.querySelectorAll('input[type="radio"]')) as HTMLInputElement[];
+    // Look for exact exact radio
+    const inputs = Array.from(document.querySelectorAll('input[type="radio"]')) as HTMLInputElement[];
     const exactInput = inputs.find((inp) => inp.value === paymentIdOrName);
 
     if (exactInput) {
@@ -82,8 +70,8 @@ export class PaymentScraper {
     }
 
     // Fallback: click the exact container matching text
-    const items = Array.from(container.querySelectorAll(
-      SELECTORS.PAYMENT_ITEM.primary + ', ' + SELECTORS.PAYMENT_ITEM.fallback
+    const items = Array.from(document.querySelectorAll(
+      SELECTORS.PAYMENT_OPTION
     )) as HTMLElement[];
 
     const matchedItem = items.find((item) => {
@@ -96,5 +84,23 @@ export class PaymentScraper {
     }
 
     return false;
+  }
+
+  /**
+   * Polls the DOM until the payment options are fully rendered.
+   * Scalev uses async Vue rendering, causing delays. We poll (e.g., 25 times every 200ms).
+   */
+  public pollPaymentState(callback: (options: PaymentOption[]) => void): void {
+    let attempts = 0;
+    const interval = setInterval(() => {
+      attempts++;
+      const items = this.scrapeAll();
+      
+      // Assume fully rendered if > 0 OR if we maxed attempts
+      if (items.length > 0 || attempts >= TIMING.PAYMENT_POLL_MAX_ATTEMPTS) {
+        clearInterval(interval);
+        callback(items);
+      }
+    }, TIMING.PAYMENT_POLL_INTERVAL_MS);
   }
 }

@@ -55,9 +55,12 @@ export type IframeMessage =
   | { type: 'UPDATE_CART_ITEMS'; items: CartItemSummary[] }
   | { type: 'UPDATE_TOTALS'; data: TotalsSummary }
   | { type: 'PAYMENT_OPTIONS_DATA'; options: PaymentOption[] }
-  | { type: 'PAYMENT_SELECTION_CONFIRMED'; methodId: string }
-  | { type: 'PAYMENT_SELECTION_FAILED'; methodId: string }
-  | { type: 'SUBMISSION_FAILED'; errors?: string[] };
+  | { type: 'PAYMENT_SELECTION_CONFIRMED'; methodId: string; iconUrl?: string; iconFilename?: string }
+  | { type: 'PAYMENT_SELECTION_FAILED'; methodId: string; reason?: string }
+  | { type: 'SUBMISSION_FAILED'; errors?: string[] }
+  | { type: 'SHOW_ERROR'; message: string; errorType?: 'error' | 'warning' | 'success' }
+  | { type: 'SAVE_AUTOFILL_DATA'; data: AutofillData }
+  | { type: 'INVALID_CART' };
 
 // ===== Parent → Iframe Messages (sent FROM Landing Page) =====
 
@@ -66,6 +69,8 @@ export type ParentMessage =
   | { type: 'APPLY_VOUCHER_CODE'; code: string }
   | { type: 'SELECT_PAYMENT_METHOD'; methodId: string }
   | { type: 'LOAD_AUTOFILL_DATA'; data: AutofillData }
+  | { type: 'ENABLE_CHECKOUT' }
+  | { type: 'DISABLE_CHECKOUT'; message?: string }
   | { type: 'SUBMIT_CHECKOUT' };
 
 // ===== Type Guard Helpers =====

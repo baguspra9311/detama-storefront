@@ -14,14 +14,20 @@ export class PaymentSelector {
     const success = this.paymentScraper.selectMethod(methodId);
     
     if (success) {
-      // In a real scenario, we wait for the DOM to update then confirm back to parent
-      // For now, we assume click = immediate selection
-      // The MutationObserver loop will also catch this and send an update.
       console.log(`[PaymentSelector] Successfully selected payment method: ${methodId}`);
     } else {
-      console.warn(`[PaymentSelector] Failed to find or select payment method: ${methodId}`);
+      console.warn(`[PaymentSelector] Method ${methodId} not immediately found. Retrying via polling...`);
+      // Retry via polling if it wasn't found (due to async rendering component)
+      this.paymentScraper.pollPaymentState((options) => {
+        const found = options.some(o => o.id === methodId || o.name === methodId);
+        if (found) {
+          this.paymentScraper.selectMethod(methodId);
+          console.log(`[PaymentSelector] Successfully selected payment method (async): ${methodId}`);
+        }
+      });
     }
 
+    // Return the synchronous success state. Parent UI should react to cart updates.
     return success;
   }
 }

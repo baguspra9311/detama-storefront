@@ -1,6 +1,9 @@
 import type { ValidationResponse } from '@shared/types/messages';
+import { API_ENDPOINTS } from '../constants';
 
 export class WAValidator {
+  private cache = new Map<string, Promise<ValidationResponse>>();
+
   /**
    * Validates and sanitizes an Indonesian WhatsApp number.
    * Format: replaces leading 0 or +62 with local conventions.
@@ -24,10 +27,45 @@ export class WAValidator {
       return { isValid: false, errors: ['Nomor WA tidak valid. Pastikan dimulai dengan 08 atau 628.'] };
     }
 
-    // Note: Can integrate a real API (like Nusms/Wablas) here if needed.
-    return { 
-      isValid: true,
-      correctedPhone: cleaned
-    };
+    // Cache lookup
+    if (this.cache.has(cleaned)) {
+      return this.cache.get(cleaned)!;
+    }
+
+    // Proxy API call
+    const requestPromise = this.callProxy(cleaned);
+    this.cache.set(cleaned, requestPromise);
+    
+    return requestPromise;
+  }
+
+  private async callProxy(phone: string): Promise<ValidationResponse> {
+    try {
+      const response = await fetch(API_ENDPOINTS.VALIDATE_WA, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ phone })
+      });
+      
+      if (!response.ok) {
+        throw new Error(`Proxy error: ${response.status}`);
+      }
+      
+      const payload = await response.json(); 
+      const data = payload?.data;
+
+      if (data && typeof data.is_valid === 'boolean') {
+        const isValid = data.is_valid;
+        const errors = !isValid && data.reason ? [data.reason] : [];
+        return { isValid, errors, correctedPhone: phone };
+      }
+
+      // If response format changes, fallback to valid
+      return { isValid: true, correctedPhone: phone };
+    } catch (e) {
+      console.error('[WAValidator] Error validating phone, falling back to true:', e);
+      // Fallback: If network fails, don't block the user
+      return { isValid: true, correctedPhone: phone };
+    }
   }
 }

@@ -4,12 +4,14 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "astro dev",
+    "dev": "astro dev -H 0.0.0.0",
+    "start": "astro dev",
     "build": "astro check && astro build",
-    "build:checkout-page": "vite build --config vite.checkout.config.ts",
-    "build:all": "npm run build:checkout-page && astro check && astro build",
+    "build:parent": "vite build -c vite.parent.config.ts",
+    "build:checkout": "vite build -c vite.checkout.config.ts",
+    "build:all": "npm run build:parent && npm run build:checkout && npm run build",
     "preview": "astro preview",
-    "typecheck": "astro check && tsc --noEmit"
+    "astro": "astro"
   },
   "dependencies": {
     "@astrojs/check": "^0.9.0",

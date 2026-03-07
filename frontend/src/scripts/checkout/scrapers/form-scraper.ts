@@ -5,18 +5,19 @@ export class FormScraper {
   /**
    * Safe getter for potentially missing input elements 
    */
-  private getInput(selectorObj: { primary: string; fallback: string }): HTMLInputElement | null {
-    const el = document.querySelector(selectorObj.primary) as HTMLInputElement;
+  private getInput(selectorObj: { primary: string; fallback: string }): HTMLInputElement | HTMLTextAreaElement | null {
+    let el = document.querySelector(selectorObj.primary) as HTMLInputElement | HTMLTextAreaElement | null;
     if (el) return el;
-    return document.querySelector(selectorObj.fallback) as HTMLInputElement | null;
+    return document.querySelector(selectorObj.fallback) as HTMLInputElement | HTMLTextAreaElement | null;
   }
 
   public getInputs() {
     return {
-      name: this.getInput(SELECTORS.FORM_NAME),
-      email: this.getInput(SELECTORS.FORM_EMAIL),
-      phone: this.getInput(SELECTORS.FORM_PHONE),
-      discount: this.getInput(SELECTORS.DISCOUNT_INPUT),
+      name: this.getInput(SELECTORS.FORM_NAME) as HTMLInputElement | null,
+      email: this.getInput(SELECTORS.FORM_EMAIL) as HTMLInputElement | null,
+      phone: this.getInput(SELECTORS.FORM_PHONE) as HTMLInputElement | null,
+      address: this.getInput(SELECTORS.FORM_ADDRESS) as HTMLTextAreaElement | null,
+      discount: this.getInput(SELECTORS.DISCOUNT_INPUT) as HTMLInputElement | null,
     };
   }
 
@@ -29,6 +30,7 @@ export class FormScraper {
       name: inputs.name?.value || '',
       email: inputs.email?.value || '',
       phone: inputs.phone?.value || '',
+      // Note: we can expand AutofillData to include address later if needed
     };
   }
 
@@ -55,10 +57,10 @@ export class FormScraper {
   /**
    * Helper to set a value robustly matching Vue's reactivity requirements.
    */
-  private setInputValue(element: HTMLInputElement, value: string) {
+  private setInputValue(element: HTMLInputElement | HTMLTextAreaElement, value: string) {
     // Some Vue inputs track the _value property on the element
     const nativeInputValueSetter = Object.getOwnPropertyDescriptor(
-      window.HTMLInputElement.prototype,
+      Object.getPrototypeOf(element),
       'value'
     )?.set;
     
@@ -71,5 +73,25 @@ export class FormScraper {
 
     // Dispatch a standard input event so Vue's v-model catches the change
     element.dispatchEvent(new Event('input', { bubbles: true }));
+    element.dispatchEvent(new Event('change', { bubbles: true }));
+  }
+
+  /**
+   * Attaches blur event listeners to specific fields. 
+   * Useful for triggering validation logic (e.g., email/WA APIs).
+   */
+  public attachBlurListeners(
+    onEmailBlur: (val: string) => void, 
+    onPhoneBlur: (val: string) => void
+  ): void {
+    const inputs = this.getInputs();
+
+    if (inputs.email) {
+      inputs.email.addEventListener('blur', (e) => onEmailBlur((e.target as HTMLInputElement).value));
+    }
+
+    if (inputs.phone) {
+      inputs.phone.addEventListener('blur', (e) => onPhoneBlur((e.target as HTMLInputElement).value));
+    }
   }
 }

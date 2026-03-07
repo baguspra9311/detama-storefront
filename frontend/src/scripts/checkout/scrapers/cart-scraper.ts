@@ -21,44 +21,32 @@ export class CartScraper {
 
     itemNodes.forEach((node) => {
       // 1. Image URL
-      // Scalev typically uses an img tag with a specific class or just the first img
-      const imgEl = node.querySelector('img');
-      const imageUrl = imgEl?.src || '';
+      const imgEl = node.querySelector(SELECTORS.CART_ITEM_IMAGE) as HTMLImageElement | null;
+      let imageUrl = '';
+      if (imgEl && imgEl.hasAttribute('src')) {
+        imageUrl = imgEl.getAttribute('src') || '';
+      }
 
       // 2. Name
-      // Extract from a bold/title element or similar
-      // E.g., .sclv-checkout-item__name
-      const nameEl = node.querySelector('.sclv-text-body-bold, .sclv-checkout-item__name, font.font-bold, strong');
+      // Extract from the SKU row
+      const nameEl = node.querySelector(SELECTORS.CART_ITEM_SKU);
       const name = nameEl?.textContent?.trim() || 'Unknown Product';
 
       // 3. Price
-      // Sometimes there are original prices (struck through) and final prices. We want the final active price.
-      // Often inside something like .sclv-text-green-500 or just formatted as Rp 
-      // We'll scrape all text nodes looking for "Rp" and take the last one or most prominent
-      const priceTextNode = node.querySelector('.text-green-500, .sclv-text-green-500, .sclv-checkout-item__price');
+      const priceTextNode = node.querySelector(SELECTORS.CART_ITEM_PRICE);
       let price = 0;
       if (priceTextNode && priceTextNode.textContent) {
         price = this.parseRupiah(priceTextNode.textContent);
-      } else {
-        // Fallback: search raw text for Rp
-        const match = node.textContent?.match(/Rp\s*([0-9.,]+)/);
-        if (match && match[1]) {
-          price = this.parseRupiah(match[1]);
-        }
       }
 
       // 4. Quantity
-      // Found near a multiplier, e.g., "x 1" or inside an input if editable
+      const qtyInput = node.querySelector(SELECTORS.CART_ITEM_QTY) as HTMLInputElement;
       let quantity = 1;
-      const qtyRegex = /x\s*(\d+)/i;
-      const qtyMatch = node.textContent?.match(qtyRegex);
-      if (qtyMatch && qtyMatch[1]) {
-        quantity = parseInt(qtyMatch[1], 10) || 1;
+      if (qtyInput && qtyInput.value) {
+        quantity = parseInt(qtyInput.value, 10) || 1;
       }
 
       // 5. SKU (Optional)
-      // Usually stored in a data attribute or part of the name
-      // If we don't have it explicitly, we leave it undefined and let the parent match by name
       let sku: string | undefined;
 
       items.push({
@@ -71,6 +59,18 @@ export class CartScraper {
     });
 
     return items;
+  }
+
+  /**
+   * Checks if the cart contains any items.
+   * Used for INVALID_CART detection.
+   */
+  public hasItems(): boolean {
+    const elements = document.querySelectorAll(SELECTORS.CART_ITEM.primary);
+    if (elements.length > 0) return true;
+    
+    const fallbackElements = document.querySelectorAll(SELECTORS.CART_ITEM.fallback);
+    return fallbackElements.length > 0;
   }
 
   /**

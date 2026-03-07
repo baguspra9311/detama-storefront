@@ -8,6 +8,7 @@ import { PaymentSelector } from './actions/payment-selector';
 import { SubmitHandler } from './actions/submit-handler';
 import { EmailValidator } from './validators/validator-email';
 import { WAValidator } from './validators/validator-wa';
+import { TIMING } from './constants';
 // CSS is imported as a raw string and injected into Scalev's <head> at runtime,
 // since we cannot add a <link> tag via Scalev's Custom Head Script feature.
 import iframeCss from '../../styles/checkout-iframe.css?raw';
@@ -43,6 +44,7 @@ class CheckoutOrchestrator {
   private lastCartState = '';
   private lastTotalsState = '';
   private lastPaymentState = '';
+  private lastFormState = '';
 
   constructor() {
     this.bridge = new IframeBridge();
@@ -71,7 +73,76 @@ class CheckoutOrchestrator {
     this.bridge.send({ type: 'IFRAME_READY' });
 
     // Initial scrape
-    setTimeout(() => this.scrapeAndBroadcast(), 500);
+    setTimeout(() => {
+      this.scrapeAndBroadcast();
+      this.attachRealtimeValidation();
+    }, 500);
+
+    // Periodically sync form data to parent for caching
+    setInterval(() => this.syncFormData(), 2000);
+  }
+
+  private syncFormData() {
+    const data = this.formScraper.getFormData();
+    const stringData = JSON.stringify(data);
+    if (this.lastFormState !== stringData && data.name) { // Ensure at least a name exists before saving
+      this.lastFormState = stringData;
+      this.bridge.send({ type: 'SAVE_AUTOFILL_DATA', data });
+    }
+  }
+
+  private attachRealtimeValidation() {
+    const inputs = this.formScraper.getInputs();
+
+    if (inputs.email) {
+      let timeout: ReturnType<typeof setTimeout>;
+      inputs.email.addEventListener('input', (e) => {
+        clearTimeout(timeout);
+        timeout = setTimeout(async () => {
+          const val = (e.target as HTMLInputElement).value;
+          if (!val) return;
+          const res = await this.emailValidator.validate(val);
+          this.updateValidationUI(inputs.email!, res.isValid, res.errors?.[0]);
+          if (!res.isValid && res.errors) {
+            this.bridge.send({ type: 'VALIDATION_ENDED', isValid: false, errors: res.errors });
+          }
+        }, TIMING.EMAIL_DEBOUNCE_MS);
+      });
+    }
+
+    if (inputs.phone) {
+      let timeout: ReturnType<typeof setTimeout>;
+      inputs.phone.addEventListener('input', (e) => {
+        clearTimeout(timeout);
+        timeout = setTimeout(async () => {
+          const val = (e.target as HTMLInputElement).value;
+          if (!val) return;
+          const res = await this.waValidator.validate(val);
+          this.updateValidationUI(inputs.phone!, res.isValid, res.errors?.[0]);
+          if (!res.isValid && res.errors) {
+            this.bridge.send({ type: 'VALIDATION_ENDED', isValid: false, errors: res.errors });
+          }
+        }, TIMING.WA_DEBOUNCE_MS);
+      });
+    }
+  }
+
+  private updateValidationUI(input: HTMLInputElement, isValid: boolean, errorMsg?: string) {
+    if (!input) return;
+    
+    input.classList.toggle('is-invalid-input', !isValid);
+    
+    let errorEl = input.parentElement?.querySelector('.validation-error-msg');
+    if (!isValid) {
+      if (!errorEl) {
+        errorEl = document.createElement('span');
+        errorEl.className = 'validation-error-msg text-red-500 text-xs mt-1 block';
+        input.parentElement?.appendChild(errorEl);
+      }
+      errorEl.textContent = errorMsg || 'Invalid value';
+    } else if (errorEl) {
+      errorEl.remove();
+    }
   }
 
   private bindBridgeEvents() {
@@ -121,6 +192,14 @@ class CheckoutOrchestrator {
       // Toggle .checkout-dark-theme on <html> element — matches CSS selector
       // in checkout-iframe.css which uses .checkout-dark-theme for variable overrides
       document.documentElement.classList.toggle('checkout-dark-theme', payload.theme === 'dark');
+    });
+
+    this.bridge.on('DISABLE_CHECKOUT', () => {
+      (window as any)._detamaCartInvalid = true;
+    });
+
+    this.bridge.on('ENABLE_CHECKOUT', () => {
+      (window as any)._detamaCartInvalid = false;
     });
   }
 

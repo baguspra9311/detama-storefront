@@ -178,6 +178,7 @@ export class CheckoutParent {
 
 // Global initialization for script tag usage
 function initDetamaCheckout() {
+  // @ts-ignore
   if (window.DetamaCheckout) return; // Prevent double init
   const app = new CheckoutParent();
   app.start();

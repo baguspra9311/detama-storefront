@@ -1,21 +1,25 @@
 {
   "name": "detama-storefront",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "private": true,
-  "description": "DeTama Landing Page & Headless Checkout System — Monorepo",
+  "type": "module",
+  "description": "DeTama Landing Page & Headless Checkout System — Hybrid Architecture",
   "workspaces": [
-    "frontend",
     "api-worker",
     "shared"
   ],
   "scripts": {
-    "dev:frontend": "npm run dev --workspace=frontend",
     "dev:worker": "npm run dev --workspace=api-worker",
-    "build:frontend": "npm run build --workspace=frontend",
+    "build:scripts": "vite build",
     "build:worker": "npm run build --workspace=api-worker",
-    "build": "npm run build:frontend && npm run build:worker",
-    "typecheck": "npm run typecheck --workspace=frontend && npm run typecheck --workspace=api-worker",
+    "build": "npm run build:scripts && npm run build:worker",
+    "typecheck": "tsc --noEmit",
     "test": "npm run test --workspace=api-worker"
+  },
+  "devDependencies": {
+    "vite": "^6.0.0",
+    "typescript": "^5.7.0",
+    "@types/node": "^22.0.0"
   },
   "engines": {
     "node": ">=20.0.0"

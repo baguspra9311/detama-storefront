@@ -1,13 +1,11 @@
 import { SELECTORS } from '../constants';
 import { IframeBridge } from '../bridge/iframe-bridge';
-import { FormScraper } from '../scrapers/form-scraper';
 
 export class SubmitHandler {
   private submitBtn: HTMLButtonElement | null = null;
   private isSubmitting = false;
 
   constructor(
-    private formScraper: FormScraper,
     private bridge: IframeBridge
   ) {}
 

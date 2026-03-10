@@ -1,11 +1,9 @@
 import { SELECTORS } from '../constants';
 import { FormScraper } from '../scrapers/form-scraper';
-import { IframeBridge } from '../bridge/iframe-bridge';
 
 export class DiscountApplier {
   constructor(
-    private formScraper: FormScraper,
-    private bridge: IframeBridge
+    private formScraper: FormScraper
   ) {}
 
   /**

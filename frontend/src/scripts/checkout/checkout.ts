@@ -53,9 +53,9 @@ class CheckoutOrchestrator {
     this.formScraper = new FormScraper();
     this.paymentScraper = new PaymentScraper();
 
-    this.discountApplier = new DiscountApplier(this.formScraper, this.bridge);
-    this.paymentSelector = new PaymentSelector(this.paymentScraper, this.bridge);
-    this.submitHandler = new SubmitHandler(this.formScraper, this.bridge);
+    this.discountApplier = new DiscountApplier(this.formScraper);
+    this.paymentSelector = new PaymentSelector(this.paymentScraper);
+    this.submitHandler = new SubmitHandler(this.bridge);
 
     this.emailValidator = new EmailValidator();
     this.waValidator = new WAValidator();

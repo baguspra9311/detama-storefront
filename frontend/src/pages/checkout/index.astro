@@ -1,90 +1,1249 @@
----
-import FragmentLayout from '../../layouts/FragmentLayout.astro';
----
-
-<!-- 
-  Menggunakan FragmentLayout agar saat di-build, output HTML tidak mengandung tag <html>, <head>, dan <body>.
-  Ganti URL di bawah dengan URL aset production Anda di Cloudflare Pages.
+<!--
+  Checkout Page – Exact clone of legacy CheckoutPage.html
+  Output HTML hanya fragment saja (tanpa <html>/<head>/<body>)
+  Sehingga bisa di-copas langsung ke Custom HTML widget di Scalev Landing Page Builder.
 -->
-<FragmentLayout 
-  stylesheetUrl="https://assets.detama.id/checkout-parent.css"
-  scriptUrl="https://assets.detama.id/checkout-parent-bundle.js"
->
-  
-  <div class="checkout-wrapper">
-    
-    <!-- CS Banner (Hidden by Default) -->
-    <div id="cs-mode-banner">
-      <p>⚠️ Keranjang Anda tidak valid atau kedaluwarsa.</p>
-      <a href="https://wa.me/message/YOUR_CS_NUMBER" target="_blank" style="color: inherit; text-decoration: underline;">Hubungi Layanan Pelanggan kami (WhatsApp)</a>
-    </div>
+<link rel="stylesheet" href="https://assets.detama.id/checkout-parent.css" />
+<script defer src="https://assets.detama.id/checkout-parent-bundle.js"></script>
 
-    <!-- Main Content: Forms & Iframe -->
-    <div class="checkout-main">
-      <!-- Loading Skeleton -->
-      <div id="iframe-loading">
-        <div class="spinner"></div>
-      </div>
-      
-      <!-- Target for Iframe injected by IframeManager -->
-      <div id="iframe-wrapper" style="width: 100%; height: 100%; min-height: 800px;"></div>
-    </div>
 
-    <!-- Sidebar: Cart & Totals -->
-    <div class="checkout-sidebar">
-      
-      <!-- Cart Items -->
-      <div>
-        <h3 style="margin-top: 0; margin-bottom: 16px;">Ringkasan Belanja</h3>
-        <div id="cart-items-container">
-          <p class="text-sm" style="color: #777;">Memuat detail produk...</p>
+<style is:inline>
+/*
+  Checkout Parent CSS – Exact clone of legacy CheckoutParent.css
+  Dark theme matching the live detama.id/checkout page
+*/
+
+/* ===== FONT IMPORT ===== */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+
+/* 1. RESET BUILDER */
+div[class*="max-w-"][style*="box-shadow"] {
+    max-width: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    box-shadow: none !important;
+    background: transparent !important;
+    min-height: auto !important;
+}
+.html-viewer,
+div[class*="flex w-full flex-col"][style*="--pw-m-t"] {
+    padding: 0 !important;
+}
+.children\:z-1 {
+    margin-bottom: 0 !important;
+}
+
+/* ===== CSS VARIABLES ===== */
+:root {
+  --bg-primary: #0d0d0d;
+  --bg-secondary: #1a1a1a;
+  --bg-tertiary: #252525;
+  --bg-card: #1e1e1e;
+  --text-primary: #f0f0f0;
+  --text-secondary: #a0a0a0;
+  --text-muted: #666666;
+  --accent-green: #1db954;
+  --accent-green-hover: #1ed760;
+  --accent-blue: #0899cf;
+  --accent-yellow: #f5a623;
+  --accent-red: #e74c3c;
+  --border-color: rgba(255,255,255,0.08);
+  --border-color-light: rgba(255,255,255,0.12);
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --shadow-sm: 0 1px 3px rgba(0,0,0,0.3);
+  --shadow-md: 0 4px 12px rgba(0,0,0,0.4);
+  --shadow-lg: 0 8px 24px rgba(0,0,0,0.5);
+  --font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  --co-safe-top: env(safe-area-inset-top, 0px);
+  --co-safe-bottom: env(safe-area-inset-bottom, 0px);
+}
+
+/* ===== RESET & BASE ===== */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+.checkout-page-wrapper {
+  font-family: var(--font-family);
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ===== HEADER ===== */
+.checkout-header {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  background: var(--bg-secondary);
+  border-bottom: 1px solid var(--border-color);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  padding: 0 16px;
+  height: 56px;
+}
+
+.header-content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 100%;
+  max-width: 720px;
+  margin: 0 auto;
+}
+
+.header-logo a {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--text-primary);
+  text-decoration: none;
+  font-weight: 700;
+  font-size: 16px;
+  cursor: pointer;
+  transition: opacity 0.2s;
+}
+.header-logo a:hover { opacity: 0.8; }
+.header-logo svg { flex-shrink: 0; }
+
+.header-secure-badge {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--text-secondary);
+}
+.header-secure-badge svg { color: var(--accent-green); }
+
+/* ===== TOAST CONTAINER ===== */
+.toast-container {
+  position: fixed;
+  top: 72px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 9999;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  width: calc(100% - 32px);
+  max-width: 500px;
+  pointer-events: none;
+}
+.toast-container > * { pointer-events: auto; }
+
+.toast-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 16px;
+  border-radius: var(--radius-md);
+  font-size: 14px;
+  font-weight: 500;
+  box-shadow: var(--shadow-lg);
+  animation: toastSlideIn 0.3s ease-out;
+  position: relative;
+  overflow: hidden;
+}
+.toast-item.toast-error {
+  background: linear-gradient(135deg, #2d1215 0%, #1a0a0c 100%);
+  border: 1px solid rgba(231,76,60,0.3);
+  color: #ff6b6b;
+}
+.toast-item.toast-success {
+  background: linear-gradient(135deg, #0d2818 0%, #0a1a10 100%);
+  border: 1px solid rgba(29,185,84,0.3);
+  color: #4ade80;
+}
+.toast-item.toast-warning {
+  background: linear-gradient(135deg, #2d2012 0%, #1a150a 100%);
+  border: 1px solid rgba(245,166,35,0.3);
+  color: #fbbf24;
+}
+.toast-item .toast-close-btn {
+  margin-left: auto;
+  background: none;
+  border: none;
+  color: inherit;
+  opacity: 0.6;
+  cursor: pointer;
+  font-size: 18px;
+  padding: 0 4px;
+}
+.toast-item .toast-close-btn:hover { opacity: 1; }
+
+@keyframes toastSlideIn {
+  from { opacity: 0; transform: translateY(-16px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ===== MAIN CONTENT ===== */
+.checkout-main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  max-width: 720px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 20px 16px;
+  gap: 20px;
+}
+
+@media (min-width: 768px) {
+  .checkout-main {
+    flex-direction: row;
+    padding: 24px 24px;
+    gap: 24px;
+    align-items: flex-start;
+  }
+}
+
+.checkout-container {
+  max-width: 720px;
+  width: 100%;
+  margin: 0 auto;
+}
+
+/* ===== FORM CONTAINER (LEFT) ===== */
+.checkout-form-container {
+  flex: 1;
+  min-width: 0;
+}
+
+.form-header {
+  margin-bottom: 16px;
+}
+.form-header h2 {
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+/* ===== EMPTY CART PLACEHOLDER ===== */
+.empty-cart-placeholder {
+  text-align: center;
+  padding: 64px 24px;
+  background: var(--bg-card);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border-color);
+}
+.empty-cart-placeholder svg {
+  color: var(--text-muted);
+  margin-bottom: 16px;
+}
+.empty-cart-placeholder p {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 8px;
+}
+.empty-cart-placeholder span {
+  font-size: 14px;
+  color: var(--text-secondary);
+  display: block;
+  margin-bottom: 24px;
+}
+.back-to-shop-btn {
+  display: inline-block;
+  padding: 12px 32px;
+  background: var(--accent-green);
+  color: white;
+  border: none;
+  border-radius: 50px;
+  font-size: 15px;
+  font-weight: 700;
+  text-decoration: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+.back-to-shop-btn:hover {
+  background: var(--accent-green-hover);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 16px rgba(29,185,84,0.3);
+}
+
+/* ===== IFRAME WRAPPER ===== */
+.iframe-wrapper {
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+}
+.iframe-wrapper iframe,
+.iframe-wrapper [data-original-tag="iframe"] {
+  width: 100%;
+  border: none;
+  display: block;
+  min-height: 600px;
+}
+
+/* ===== ORDER SUMMARY (RIGHT SIDE / ASIDE) ===== */
+.order-summary-container {
+  background: var(--bg-card);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border-color);
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+}
+
+@media (min-width: 768px) {
+  .order-summary-container {
+    width: 320px;
+    flex-shrink: 0;
+    position: sticky;
+    top: 76px;
+  }
+}
+
+.order-summary-container > h2 {
+  font-size: 18px;
+  font-weight: 700;
+  margin-bottom: 16px;
+  color: var(--text-primary);
+}
+
+/* ===== CART ITEMS ===== */
+.cart-items {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.cart-item {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  padding: 0;
+}
+.cart-item-image-wrapper {
+  position: relative;
+  width: 56px;
+  height: 56px;
+  border-radius: var(--radius-sm);
+  overflow: visible;
+  flex-shrink: 0;
+}
+.cart-item-image-wrapper img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border-color-light);
+}
+.cart-item-qty-badge {
+  position: absolute;
+  top: -6px;
+  right: -6px;
+  background: var(--text-primary);
+  color: var(--bg-primary);
+  font-size: 10px;
+  font-weight: 700;
+  min-width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 4px;
+}
+.cart-item-info {
+  flex: 1;
+  min-width: 0;
+}
+.cart-item-name {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-primary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin: 0;
+}
+.cart-item-variant {
+  font-size: 12px;
+  color: var(--text-secondary);
+  margin: 2px 0 0;
+}
+.cart-item-price {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text-primary);
+  white-space: nowrap;
+}
+
+/* ===== SKELETON LOADER ===== */
+.cart-skeleton-loader {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.skeleton-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.skeleton-box {
+  background: var(--bg-tertiary);
+  border-radius: var(--radius-sm);
+  animation: skeletonPulse 1.5s ease-in-out infinite;
+}
+.skeleton-image {
+  width: 56px;
+  height: 56px;
+  border-radius: var(--radius-sm);
+  flex-shrink: 0;
+}
+.skeleton-details {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.skeleton-line-title {
+  height: 14px;
+  width: 80%;
+  border-radius: 4px;
+}
+.skeleton-line-variant {
+  height: 12px;
+  width: 50%;
+  border-radius: 4px;
+}
+.skeleton-line-price {
+  height: 14px;
+  width: 60px;
+  border-radius: 4px;
+}
+
+@keyframes skeletonPulse {
+  0%, 100% { opacity: 0.4; }
+  50% { opacity: 0.8; }
+}
+
+/* ===== PAYMENT TRIGGER BUTTON ===== */
+.payment-trigger-button {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 16px;
+  background: var(--bg-tertiary);
+  border: 1px solid var(--border-color-light);
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: all 0.2s;
+  text-align: left;
+  color: var(--text-primary);
+  font-family: inherit;
+  margin-top: 8px;
+}
+.payment-trigger-button:hover {
+  border-color: rgba(255,255,255,0.2);
+  background: rgba(255,255,255,0.06);
+}
+
+.payment-logo-wrapper {
+  width: 40px;
+  height: 40px;
+  border-radius: var(--radius-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  background-color: rgba(255,255,255,0.06);
+  overflow: hidden;
+}
+.payment-logo-wrapper img {
+  max-width: 28px;
+  max-height: 20px;
+  object-fit: contain;
+}
+.payment-logo-wrapper.is-pulsing-loading {
+  animation: skeletonPulse 1.5s ease-in-out infinite;
+}
+
+.payment-trigger-button .text-wrapper {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+.payment-trigger-button .label {
+  font-size: 11px;
+  color: var(--text-secondary);
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+}
+.payment-trigger-button .method-name {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+.payment-trigger-button .chevron {
+  font-size: 22px;
+  color: var(--text-muted);
+  flex-shrink: 0;
+}
+
+/* Loading dots */
+.loading-dots, #payment-loading-dots {
+  display: inline-flex;
+  gap: 2px;
+}
+.loading-dots span, #payment-loading-dots span {
+  animation: dotPulse 1.2s ease-in-out infinite;
+}
+.loading-dots span:nth-child(2), #payment-loading-dots span:nth-child(2) { animation-delay: 0.2s; }
+.loading-dots span:nth-child(3), #payment-loading-dots span:nth-child(3) { animation-delay: 0.4s; }
+
+@keyframes dotPulse {
+  0%, 80%, 100% { opacity: 0.3; }
+  40% { opacity: 1; }
+}
+
+/* ===== SUMMARY BREAKDOWN ===== */
+.summary-breakdown {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 16px 0;
+  border-top: 1px solid var(--border-color);
+}
+.summary-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 14px;
+  color: var(--text-secondary);
+}
+.summary-row span:last-child {
+  font-weight: 500;
+  color: var(--text-primary);
+}
+#discount-row span:last-child {
+  color: var(--accent-green);
+}
+
+.loading-text {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+}
+.loading-text-dots {
+  display: inline-flex;
+  gap: 1px;
+}
+.loading-text-dots span {
+  animation: dotPulse 1.2s ease-in-out infinite;
+}
+.loading-text-dots span:nth-child(2) { animation-delay: 0.2s; }
+.loading-text-dots span:nth-child(3) { animation-delay: 0.4s; }
+
+.fee-label-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+.fee-info-trigger-btn {
+  background: none;
+  border: none;
+  color: var(--text-muted);
+  cursor: pointer;
+  padding: 2px;
+  display: inline-flex;
+}
+.fee-info-trigger-btn:hover { color: var(--text-secondary); }
+
+/* ===== SUMMARY TOTAL ===== */
+.summary-total {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 0 12px;
+  border-top: 1px solid var(--border-color);
+}
+.summary-total .label {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+.summary-total #cart-total {
+  font-size: 20px;
+  font-weight: 800;
+  color: var(--text-primary);
+}
+
+/* ===== DESKTOP CHECKOUT BUTTON ===== */
+.desktop-checkout-btn {
+  width: 100%;
+  padding: 16px;
+  background: var(--accent-green);
+  color: white;
+  border: none;
+  border-radius: var(--radius-md);
+  font-size: 16px;
+  font-weight: 700;
+  cursor: pointer;
+  font-family: inherit;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  position: relative;
+}
+.desktop-checkout-btn:hover:not(:disabled) {
+  background: var(--accent-green-hover);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 16px rgba(29,185,84,0.3);
+}
+.desktop-checkout-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+}
+.desktop-checkout-btn .loader {
+  display: none;
+}
+.desktop-checkout-btn.is-loading .button-action-text { visibility: hidden; }
+.desktop-checkout-btn.is-loading .loader { display: flex; }
+
+/* Spinner SVG (for buttons) */
+.loader svg {
+  width: 20px;
+  height: 20px;
+}
+.spinner_OSmW { animation: spinner_anim 0.75s linear infinite; }
+@keyframes spinner_anim {
+  to { transform: rotate(360deg); }
+}
+
+/* ===== TRUST BADGES ===== */
+.trust-badges-wrapper {
+  margin-top: 12px;
+  padding-top: 12px;
+}
+.trust-badges-logos {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.trust-badges-logos img {
+  height: 22px;
+  opacity: 0.5;
+  filter: grayscale(0.3);
+  transition: opacity 0.2s, filter 0.2s;
+}
+.trust-badges-logos img:hover {
+  opacity: 0.8;
+  filter: grayscale(0);
+}
+
+/* ===== DESKTOP SECURE TEXT ===== */
+.desktop-secure-text {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  font-size: 12px;
+  color: var(--text-muted);
+  margin-top: 12px;
+}
+.desktop-secure-text svg { color: var(--accent-green); }
+
+/* ===== FOOTER ===== */
+.checkout-footer {
+  text-align: center;
+  padding: 20px 16px;
+  font-size: 13px;
+  color: var(--text-muted);
+  border-top: 1px solid var(--border-color);
+}
+.checkout-footer a {
+  color: var(--accent-blue);
+  text-decoration: none;
+  font-weight: 600;
+}
+.checkout-footer a:hover { text-decoration: underline; }
+
+/* ===== SCROLL HINT OVERLAY ===== */
+.scroll-hint-overlay {
+  position: fixed;
+  bottom: 80px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 40;
+  transition: opacity 0.3s, visibility 0.3s;
+}
+.scroll-hint-overlay.is-hidden {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+.scroll-hint-content {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 20px;
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-color-light);
+  border-radius: 50px;
+  box-shadow: var(--shadow-lg);
+  color: var(--text-secondary);
+  font-size: 13px;
+  font-weight: 500;
+  white-space: nowrap;
+}
+.scroll-hint-content .chevron-down {
+  animation: scrollBounce 1.5s ease-in-out infinite;
+}
+@keyframes scrollBounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(4px); }
+}
+
+/* ===== STICKY CHECKOUT FOOTER ===== */
+.sticky-checkout-footer {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 45;
+  padding: 12px 16px;
+  padding-bottom: calc(12px + var(--co-safe-bottom));
+  background: var(--bg-secondary);
+  border-top: 1px solid var(--border-color);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+.sticky-checkout-btn {
+  width: 100%;
+  max-width: 720px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 16px 20px;
+  background: var(--accent-green);
+  color: white;
+  border: none;
+  border-radius: var(--radius-md);
+  font-size: 16px;
+  font-weight: 700;
+  cursor: pointer;
+  font-family: inherit;
+  position: relative;
+  transition: all 0.2s;
+}
+.sticky-checkout-btn:hover:not(:disabled) {
+  background: var(--accent-green-hover);
+}
+.sticky-checkout-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+.sticky-checkout-btn .button-total-price {
+  font-weight: 800;
+}
+.sticky-checkout-btn .button-action-text {
+  font-weight: 600;
+}
+.sticky-checkout-btn .skeleton-box.is-loading {
+  animation: skeletonPulse 1.5s ease-in-out infinite;
+  background: rgba(255,255,255,0.2);
+  border-radius: 4px;
+}
+.sticky-checkout-btn .loader { display: none; }
+.sticky-checkout-btn.is-loading .button-total-price,
+.sticky-checkout-btn.is-loading .button-action-text { visibility: hidden; }
+.sticky-checkout-btn.is-loading .loader { display: flex; }
+
+/* ===== PAYMENT MODAL ===== */
+.payment-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0,0,0,0.7);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  z-index: 100;
+  display: none;
+  align-items: flex-end;
+  justify-content: center;
+}
+.payment-modal-overlay.is-open {
+  display: flex;
+}
+
+.payment-modal-container {
+  background: var(--bg-secondary);
+  border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+  width: 100%;
+  max-width: 520px;
+  max-height: 85vh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  animation: modalSlideUp 0.3s ease-out;
+}
+
+@media (min-width: 768px) {
+  .payment-modal-overlay {
+    align-items: center;
+  }
+  .payment-modal-container {
+    border-radius: var(--radius-lg);
+    max-height: 70vh;
+  }
+}
+
+@keyframes modalSlideUp {
+  from { transform: translateY(100%); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+.payment-modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px 20px 16px;
+  border-bottom: 1px solid var(--border-color);
+}
+.payment-modal-header h2 {
+  font-size: 18px;
+  font-weight: 700;
+  margin: 0;
+}
+.payment-modal-close-btn {
+  background: none;
+  border: none;
+  color: var(--text-secondary);
+  cursor: pointer;
+  padding: 4px;
+  display: flex;
+  transition: color 0.2s;
+}
+.payment-modal-close-btn:hover { color: var(--text-primary); }
+
+.payment-modal-content {
+  flex: 1;
+  overflow-y: auto;
+  padding: 0 20px 20px;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Payment options within modal */
+.payment-group {
+  margin-top: 16px;
+}
+.payment-group-label {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--text-muted);
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+.payment-option {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 14px 16px;
+  background: var(--bg-tertiary);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: all 0.15s;
+  margin-bottom: 8px;
+  color: var(--text-primary);
+  font-family: inherit;
+  width: 100%;
+  text-align: left;
+}
+.payment-option:hover {
+  border-color: var(--accent-green);
+  background: rgba(29,185,84,0.05);
+}
+.payment-option.is-selected {
+  border-color: var(--accent-green);
+  background: rgba(29,185,84,0.08);
+}
+.payment-option .payment-option-logo {
+  width: 40px;
+  height: 28px;
+  object-fit: contain;
+  border-radius: 4px;
+}
+.payment-option .payment-option-name {
+  flex: 1;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+/* ===== ITEM REPORT POPOVER ===== */
+.item-report-popover {
+  position: absolute;
+  z-index: 60;
+  display: none;
+  width: 280px;
+}
+.item-report-popover.is-visible { display: block; }
+.popover-arrow {
+  width: 12px;
+  height: 12px;
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  transform: rotate(45deg);
+  position: absolute;
+  top: -6px;
+  left: 20px;
+  border-right: none;
+  border-bottom: none;
+}
+.popover-content {
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  padding: 16px;
+  box-shadow: var(--shadow-lg);
+}
+.popover-content h4 {
+  font-size: 14px;
+  font-weight: 700;
+  margin-bottom: 6px;
+  color: var(--accent-red);
+}
+.popover-content p {
+  font-size: 13px;
+  color: var(--text-secondary);
+  line-height: 1.5;
+  margin-bottom: 12px;
+}
+.popover-action-btn {
+  display: inline-flex;
+  align-items: center;
+  padding: 8px 14px;
+  background: var(--accent-green);
+  color: white;
+  border: none;
+  border-radius: var(--radius-sm);
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: inherit;
+  transition: background 0.2s;
+}
+.popover-action-btn:hover { background: var(--accent-green-hover); }
+
+/* ===== VOUCHER SECTION (inside modal) ===== */
+.voucher-input-wrapper {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+.voucher-input-wrapper input {
+  flex: 1;
+  padding: 12px 14px;
+  background: var(--bg-tertiary);
+  border: 1px solid var(--border-color-light);
+  border-radius: var(--radius-sm);
+  color: var(--text-primary);
+  font-size: 14px;
+  font-family: inherit;
+  outline: none;
+  transition: border-color 0.2s;
+}
+.voucher-input-wrapper input::placeholder { color: var(--text-muted); }
+.voucher-input-wrapper input:focus { border-color: var(--accent-green); }
+.voucher-input-wrapper button {
+  padding: 0 20px;
+  background: var(--accent-green);
+  color: white;
+  border: none;
+  border-radius: var(--radius-sm);
+  font-weight: 600;
+  cursor: pointer;
+  font-family: inherit;
+  transition: background 0.2s;
+}
+.voucher-input-wrapper button:hover { background: var(--accent-green-hover); }
+.voucher-input-wrapper button:disabled { opacity: 0.5; cursor: not-allowed; }
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 767px) {
+  .order-summary-container {
+    width: 100%;
+  }
+  .desktop-checkout-btn {
+    display: none;
+  }
+  .desktop-secure-text {
+    display: none;
+  }
+  .trust-badges-wrapper {
+    display: none;
+  }
+  .checkout-main {
+    padding-bottom: 100px;
+  }
+}
+
+@media (min-width: 768px) {
+  .sticky-checkout-footer {
+    display: none !important;
+  }
+  .scroll-hint-overlay {
+    display: none !important;
+  }
+}
+
+/* ===== UTILITY CLASSES ===== */
+.is-hidden { display: none !important; }
+.text-sm { font-size: 13px; }
+
+/* ===== CS BANNER ===== */
+#cs-mode-banner {
+  display: none;
+  background: linear-gradient(135deg, #2d2012 0%, #1a150a 100%);
+  border: 1px solid rgba(245,166,35,0.3);
+  color: #fbbf24;
+  padding: 14px 16px;
+  border-radius: var(--radius-md);
+  text-align: center;
+  font-weight: 500;
+  font-size: 14px;
+}
+#cs-mode-banner a {
+  color: inherit;
+  text-decoration: underline;
+}
+
+</style>
+
+<div class="checkout-page-wrapper" data-theme="dark">
+
+    <header class="checkout-header" style="">
+        <div class="checkout-container header-content">
+            <div class="header-logo">
+                <a title="Kembali" aria-label="Kembali ke halaman sebelumnya">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="15 18 9 12 15 6"></polyline></svg>
+                    <span>Ringkasan & Pembayaran</span>
+                </a>
+            </div>
+            <div class="header-secure-badge" title="Transaksi ini aman dan terenkripsi">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+                <span>100% Transaksi Aman</span>
+            </div>
         </div>
-      </div>
+    </header>
 
-      <!-- Voucher input -->
-      <div class="voucher-form">
-        <input type="text" id="voucher-input" placeholder="Kode Diskon (Opsional)" />
-        <button id="apply-voucher-btn">Gunakan</button>
-      </div>
+    <div id="toast-container" class="toast-container" style=""></div>
 
-      <hr style="border: none; border-top: 1px solid #e8e8e8; margin: 4px 0;" />
+    <main class="checkout-main checkout-container">
+        <div class="checkout-form-container">
+            <div class="form-header" style="display: none;">
+                <h2>Satu Langkah Lagi...</h2>
+            </div>
+            <div id="loading-state" class="empty-cart-placeholder">
+                <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg>
+                <p>Pilih Item Terlebih Dahulu</p>
+                <span>Sepertinya Anda belum memilih item apapun untuk di-checkout.</span>
+                <a href="https://detama.id/" class="back-to-shop-btn">Kembali Berbelanja</a>
+            </div>
+            <div id="iframe-wrapper" class="iframe-wrapper" style="display: none;"><iframe id="checkout-iframe" title="Proses Checkout Aman"></iframe></div>
+        </div>
 
-      <!-- Payment Method Selection -->
-      <div>
-        <h3 style="margin-top: 0; margin-bottom: 12px; font-size: 16px;">Metode Pembayaran</h3>
-        <button id="select-payment-btn" class="payment-selection-trigger">
-          Memuat metode pembayaran...
+        <aside class="order-summary-container" style="display: none;">
+            <h2>Ringkasan Pesanan Anda</h2>
+            <div id="cart-items-container" class="cart-items">
+                <div class="cart-skeleton-loader">
+                    <div class="skeleton-item">
+                        <div class="skeleton-box skeleton-image"></div>
+                        <div class="skeleton-details">
+                            <div class="skeleton-box skeleton-line-title"></div>
+                            <div class="skeleton-box skeleton-line-variant"></div>
+                        </div>
+                        <div class="skeleton-box skeleton-line-price"></div>
+                    </div>
+                    <div class="skeleton-item">
+                        <div class="skeleton-box skeleton-image"></div>
+                        <div class="skeleton-details">
+                            <div class="skeleton-box skeleton-line-title"></div>
+                            <div class="skeleton-box skeleton-line-variant"></div>
+                        </div>
+                        <div class="skeleton-box skeleton-line-price"></div>
+                    </div>
+                </div>
+            </div>
+
+            <button id="openVoucherModalBtn" class="payment-trigger-button" style="margin-top: 0; margin-bottom: 16px; display: none;">
+                <div class="payment-logo-wrapper" style="background-color: color-mix(in srgb, var(--accent-yellow) 15%, transparent);">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="color: var(--accent-yellow);">
+                        <line x1="19" y1="5" x2="5" y2="19"></line>
+                        <circle cx="6.5" cy="6.5" r="2.5"></circle>
+                        <circle cx="17.5" cy="17.5" r="2.5"></circle>
+                    </svg>
+                </div>
+                <div class="text-wrapper">
+                    <span class="label">Diskon & Voucher</span>
+                    <span class="method-name"> Milik Kamu</span>
+                </div>
+                <span class="chevron">›</span>
+            </button>
+
+            <div class="summary-breakdown">
+                <div class="summary-row">
+                    <span>Subtotal</span>
+                    <span id="cart-subtotal" class="loading-text">
+                        Menghitung
+                        <span class="loading-text-dots">
+                            <span>.</span><span>.</span><span>.</span>
+                        </span>
+                    </span>
+                </div>
+                <div class="summary-row" id="discount-row" style="display: none;">
+                    <span>Diskon</span>
+                    <span id="cart-discount">- Rp 0</span>
+                </div>
+                <div class="summary-row" id="fee-row" style="display: none;">
+                    <span id="fee-label" class="fee-label-wrapper">
+                        Biaya Penanganan
+                        <button type="button" class="fee-info-trigger-btn" aria-label="Info biaya penanganan">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                <circle cx="12" cy="12" r="10"></circle>
+                                <line x1="12" y1="16" x2="12" y2="12"></line>
+                                <line x1="12" y1="8" x2="12.01" y2="8"></line>
+                            </svg>
+                        </button>
+                    </span>
+                    <span id="cart-fee">Rp 0</span>
+                </div>
+            </div>
+
+            <button id="changePaymentBtn" class="payment-trigger-button">
+                <div class="payment-logo-wrapper is-pulsing-loading">
+                    <img id="selectedPaymentLogo" src="https://placehold.co/32x20/FFFFFF/FFFFFF" alt="Payment Method">
+                </div>
+                <div class="text-wrapper">
+                    <span class="label">
+                        Metode Pembayaran
+                        <span class="loading-dots" id="payment-loading-dots">
+                            <span>.</span><span>.</span><span>.</span>
+                        </span>
+                    </span>
+                    <span id="selectedPaymentName" class="method-name"> </span>
+                </div>
+                <span class="chevron">›</span>
+            </button>
+
+            <div id="totals-container" class="summary-total">
+                <span class="label">Total</span>
+                <span id="cart-total" class="loading-text">
+                    Menghitung
+                    <span class="loading-text-dots">
+                        <span>.</span><span>.</span><span>.</span>
+                    </span>
+                </span>
+            </div>
+
+            <button id="desktopCheckoutBtn" class="desktop-checkout-btn" disabled>
+                <span class="button-action-text">Lanjutkan ke Pembayaran</span>
+                <div class="loader"><svg viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><g class="spinner_OSmW"><rect x="11" y="1" width="2" height="5" opacity=".14"></rect><rect x="11" y="1" width="2" height="5" transform="rotate(30 12 12)" opacity=".29"></rect><rect x="11" y="1" width="2" height="5" transform="rotate(60 12 12)" opacity=".43"></rect><rect x="11" y="1" width="2" height="5" transform="rotate(90 12 12)" opacity=".57"></rect><rect x="11" y="1" width="2" height="5" transform="rotate(120 12 12)" opacity=".71"></rect><rect x="11" y="1" width="2" height="5" transform="rotate(150 12 12)" opacity=".86"></rect><rect x="11" y="1" width="2" height="5" transform="rotate(180 12 12)"></rect></g></svg></div>
+            </button>
+
+            <div class="trust-badges-wrapper">
+                <div class="trust-badges-logos">
+                    <img src="https://cdn.scalev.id/icons/BT_bca.png" alt="BCA" title="BCA">
+                    <img src="https://cdn.scalev.id/icons/BT_bankmandiri.png" alt="Bank Mandiri" title="Bank Mandiri">
+                    <img src="https://cdn.scalev.id/icons/qris.png" alt="QRIS" title="QRIS">
+                    <img src="https://cdn.scalev.id/icons/invoice.png" alt="E-Payment/Virtual Account" title="E-Payment/Virtual Account">
+                    <img src="https://cdn.scalev.id/icons/gopay.png" alt="GoPay" title="GoPay">
+                    <img src="https://cdn.scalev.id/icons/dana.png" alt="DANA" title="DANA">
+                    <img src="https://cdn.scalev.id/icons/linkaja.png" alt="Link Aja" title="Link Aja">
+                    <img src="https://cdn.scalev.id/icons/shopeepay.png" alt="ShopeePay" title="ShopeePay">
+                </div>
+            </div>
+
+            <div class="desktop-secure-text">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+                <span>Dilindungi Enkripsi 256-bit. Data Anda aman.</span>
+            </div>
+        </aside>
+    </main>
+
+    <div id="footer-observer-marker" style="height: 10px;"></div>
+    <footer class="checkout-footer">
+        <p>© 2025 DeTama.id • Diciptakan dan dioptimalkan dengan <a href="https://scalev.id/watermark?aff_code=DETAMA" target="_blank" style="color: rgb(8, 153, 207); text-decoration: none; font-weight: 600;">Scalev</a>.</p>
+    </footer>
+
+    <div id="scroll-hint-overlay" class="scroll-hint-overlay is-hidden" style="">
+        <div class="scroll-hint-content">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" class="chevron-down">
+                <polyline points="7 13 12 18 17 13"></polyline>
+                <polyline points="7 6 12 11 17 6"></polyline>
+            </svg>
+            <span>Geser ke Bawah untuk Isi Form</span>
+        </div>
+    </div>
+
+    <div class="sticky-checkout-footer" style="display: none;">
+        <button id="stickyCheckoutBtn" class="sticky-checkout-btn" disabled>
+            <span class="button-total-price" id="sticky-total-price"></span>
+            <span class="button-action-text">Bayar Sekarang</span>
+            <div class="skeleton-box is-loading" style="height: 24px; width: 150px;"></div>
+            <div class="loader"><svg viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><g class="spinner_OSmW"><rect x="11" y="1" width="2" height="5" opacity=".14"></rect><rect x="11" y="1" width="2" height="5" transform="rotate(30 12 12)" opacity=".29"></rect><rect x="11" y="1" width="2" height="5" transform="rotate(60 12 12)" opacity=".43"></rect><rect x="11" y="1" width="2" height="5" transform="rotate(90 12 12)" opacity=".57"></rect><rect x="11" y="1" width="2" height="5" transform="rotate(120 12 12)" opacity=".71"></rect><rect x="11" y="1" width="2" height="5" transform="rotate(150 12 12)" opacity=".86"></rect><rect x="11" y="1" width="2" height="5" transform="rotate(180 12 12)"></rect></g></svg></div>
         </button>
-      </div>
-
-      <!-- Totals Breakdown -->
-      <div id="totals-container"></div>
-      
     </div>
-  </div>
 
-  <!-- Sticky Footer -->
-  <div class="checkout-footer">
-    <div>
-      <div style="font-size: 12px; color: #777; margin-bottom: 4px;">Total Tagihan</div>
-      <div id="sticky-total-price" class="checkout-footer-total">
-        <span id="footer-total-skeleton">Rp -</span>
-      </div>
+    <div id="payment-modal" class="payment-modal-overlay" style="">
+        <div class="payment-modal-container">
+            <div class="payment-modal-header">
+                <h2>Pilih Metode Pembayaran</h2>
+                <button id="payment-modal-close-btn" class="payment-modal-close-btn" aria-label="Tutup modal pilihan pembayaran">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                </button>
+            </div>
+            <div id="payment-options-list" class="payment-modal-content"></div>
+        </div>
     </div>
-    <button id="submit-checkout-btn" class="checkout-footer-btn" disabled>
-      Selesaikan Pesanan
-    </button>
-  </div>
 
-  <!-- Payment Modal -->
-  <div id="payment-modal" class="modal-overlay">
-    <div class="modal-content">
-      <button class="modal-close" data-close-modal>&times;</button>
-      <h2 style="margin-top: 0; margin-bottom: 20px; font-size: 20px;">Pilih Pembayaran</h2>
-      <div id="payment-methods-grid">
-        <div style="text-align: center; padding: 20px;"><div class="spinner" style="margin: 0 auto;"></div></div>
-      </div>
+    <div id="voucher-modal" class="payment-modal-overlay" style="">
+        <div class="payment-modal-container">
+            <div class="payment-modal-header">
+                <h2>Diskon & Voucher Anda</h2>
+                <button id="voucher-modal-close-btn" class="payment-modal-close-btn" aria-label="Tutup">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                </button>
+            </div>
+            <div id="voucher-options-list" class="payment-modal-content" style="padding-top: 16px;"></div>
+        </div>
     </div>
-  </div>
 
-</FragmentLayout>
+    <div id="item-report-popover" class="item-report-popover">
+        <div class="popover-arrow"></div>
+        <div class="popover-content">
+            <h4 id="popover-title">Kenapa Tidak Valid?</h4>
+            <p id="popover-text">Produk ini mengalami masalah sinkronisasi (kemungkinan ID-nya berubah). Mohon bantuannya untuk melapor agar bisa kami perbaiki.</p>
+            <button type="button" id="popover-action-btn" class="popover-action-btn">
+                <svg fill="currentColor" width="14" height="14" viewBox="0 0 32 32" version="1.1" xmlns="http://www.w3.org/2000/svg" style="margin-right: 6px;" aria-hidden="true"><title>whatsapp</title><path d="M26.576 5.363c-2.69-2.69-6.406-4.354-10.511-4.354-8.209 0-14.865 6.655-14.865 14.865 0 2.732 0.737 5.291 2.022 7.491l-0.038-0.070-2.109 7.702 7.879-2.067c2.051 1.139 4.498 1.809 7.102 1.809h0.006c8.209-0.003 14.862-6.659 14.862-14.868 0-4.103-1.662-7.817-4.349-10.507l0 0zM16.062 28.228h-0.005c-0 0-0.001 0-0.001 0-2.319 0-4.489-0.64-6.342-1.753l0.056 0.031-0.451-0.267-4.675 1.227 1.247-4.559-0.294-0.467c-1.185-1.862-1.889-4.131-1.889-6.565 0-6.822 5.531-12.353 12.353-12.353s12.353 5.531 12.353 12.353c0 6.822-5.53 12.353-12.353 12.353h-0zM22.838 18.977c-0.371-0.186-2.197-1.083-2.537-1.208-0.341-0.124-0.589-0.185-0.837 0.187-0.246 0.371-0.958 1.207-1.175 1.455-0.216 0.249-0.434 0.279-0.805 0.094-1.15-0.466-2.138-1.087-2.997-1.852l0.010 0.009c-0.799-0.74-1.484-1.587-2.037-2.521l-0.028-0.052c-0.216-0.371-0.023-0.572 0.162-0.757 0.167-0.166 0.372-0.434 0.557-0.65 0.146-0.179 0.271-0.384 0.366-0.604l0.006-0.017c0.043-0.087 0.068-0.188 0.068-0.296 0-0.131-0.037-0.253-0.101-0.357l0.002 0.003c-0.094-0.186-0.836-2.014-1.145-2.758-0.302-0.724-0.609-0.625-0.836-0.637-0.216-0.010-0.464-0.012-0.712-0.012-0.395 0.010-0.746 0.188-0.988 0.463l-0.001 0.002c-0.802 0.761-1.3 1.834-1.3 3.023 0 0.026 0 0.053 0.001 0.079l-0-0.004c0.131 1.467 0.681 2.784 1.527 3.857l-0.012-0.015c1.604 2.379 3.742 4.282 6.251 5.564l0.094 0.043c0.548 0.248 1.25 0.513 1.968 0.74l0.149 0.041c0.442 0.14 0.951 0.221 1.479 0.221 0.303 0 0.601-0.027 0.889-0.078l-0.031 0.004c1.069-0.223 1.956-0.868 2.497-1.749l0.009-0.017c0.165-0.366 0.261-0.793 0.261-1.242 0-0.185-0.016-0.366-0.047-0.542l0.003 0.019c-0.092-0.155-0.34-0.247-0.712-0.434z"></path></svg>
+                Laporkan Masalah
+            </button>
+        </div>
+    </div>
+</div>

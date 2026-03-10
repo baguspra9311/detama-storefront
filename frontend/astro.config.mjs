@@ -20,7 +20,7 @@ export default defineConfig({
       assetsInlineLimit: 0,
       rollupOptions: {
         output: {
-          // Predictable filenames for CDN hosting on cdn.detama.id
+          // Predictable filenames for CDN hosting on assets.detama.id
           entryFileNames: 'js/[name]-[hash:8].js',
           chunkFileNames: 'js/chunks/[name]-[hash:8].js',
           assetFileNames: 'css/[name]-[hash:8][extname]',

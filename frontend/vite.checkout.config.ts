@@ -12,7 +12,7 @@ const __dirname = fileURLToPath(new URL('.', import.meta.url));
  *   checkout-parent.js → runs on the detama.id parent window (built in Phase 2b)
  *
  * Output: `public/js/checkout-page.js` — loaded via Scalev's Custom Head Script:
- *   <script src="https://cdn.detama.id/checkout-page.js" defer></script>
+ *   <script src="https://assets.detama.id/checkout-page.js" defer></script>
  *
  * Must NOT use dynamic import() — everything must be self-contained (true IIFE).
  */
@@ -26,7 +26,7 @@ export default defineConfig({
   },
 
   build: {
-    // Output to dist/js — directly deployable to CDN (cdn.detama.id/checkout-page.js)
+    // Output to dist/js — directly deployable to CDN (assets.detama.id/checkout-page.js)
     // Note: NOT using public/js to avoid Vite warning about outDir inside publicDir.
     // This script is uploaded to CDN separately, not served through Astro.
     outDir: 'dist/js',

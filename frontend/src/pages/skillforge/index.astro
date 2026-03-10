@@ -4,26 +4,798 @@
  * Outputs a bare HTML fragment for Scalev injection.
  */
 import FragmentLayout from '../../layouts/FragmentLayout.astro';
-import { skillForgeProducts } from '../../data/products';
-
-const CDN_BASE = 'https://cdn.detama.id';
 ---
 
 <FragmentLayout
-  stylesheetUrl={`${CDN_BASE}/css/landing.css`}
-  scriptUrl={`${CDN_BASE}/js/landing-app.js`}
+  stylesheetUrl="/css/skillforge.css"
+  scriptUrl="/js/skillforge-app.js"
 >
-  <section id="skillforge-hero" class="hero-section">
-    <h2>SkillForge</h2>
-    <p>Master the art of online selling with expert-led courses.</p>
-  </section>
-
-  <section id="skillforge-products" class="product-grid-section">
-    <!-- ProductGrid component will be built in Phase 4 -->
-    <p>Course catalog placeholder — {skillForgeProducts.length} courses available.</p>
-  </section>
-
-  <aside id="skillforge-cart" class="cart-drawer">
-    <!-- CartDrawer component will be built in Phase 4 -->
-  </aside>
+<div id="skillforge-app">
+<header class="sf-header">
+<div class="sf-container sf-nav">
+<a class="sf-logo" href="#" onclick="window.scrollTo({top: 0, behavior: 'smooth'}); return false;">
+<svg fill="none" height="32" viewBox="0 0 40 40" width="32" xmlns="http://www.w3.org/2000/svg">
+<rect fill="#0F172A" height="40" rx="8" width="40"></rect>
+<rect fill="#D97706" height="2" width="24" x="8" y="30"></rect>
+<path d="M12 12V26M28 12V26M12 12H28M12 18H28M20 12V26" stroke="white" stroke-linecap="round" stroke-width="2.5"></path>
+</svg>
+<div style="display: flex; flex-direction: column; line-height: 1;">
+<span style="font-family: 'Playfair Display', serif; font-weight: 800; font-size: 1.2rem; letter-spacing: -0.02em; color: inherit;">SkillForge</span>
+</div>
+</a>
+<nav class="desktop-theater-nav">
+<a class="nav-link-item" href="#tour-office" id="link-office">
+<span class="nav-dot"></span><svg fill="none" height="14" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" width="14">
+<path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path>
+<path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path>
+</svg> Ruang Administrasi
+                </a>
+<a class="nav-link-item" href="#tour-business" id="link-business">
+<span class="nav-dot"></span><svg fill="none" height="14" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" width="14">
+<rect height="14" rx="2" ry="2" width="20" x="2" y="3"></rect>
+<line x1="8" x2="16" y1="21" y2="21"></line>
+<line x1="12" x2="12" y1="17" y2="21"></line>
+</svg> Ruang Bisnis
+                </a>
+</nav>
+<button class="sf-btn sf-btn-outline" id="headerCartBtn" style="padding: 8px 16px;">
+<span style="font-size: 14px;">Keranjang</span>
+<svg fill="none" height="18" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" width="18">
+<path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
+<line x1="3" x2="21" y1="6" y2="6"></line>
+<path d="M16 10a4 4 0 0 1-8 0"></path>
+</svg>
+<div class="cart-dot" id="cartDot"></div>
+</button>
+</div>
+</header>
+<section class="view-section active" id="view-home">
+<div class="hero-museum-dark">
+<div class="spotlight-cone"></div>
+<div class="stage-light-pool"></div>
+<div class="gold-dust-container">
+<div class="gold-dust" style="left:20%; animation-delay:0s; animation-duration:15s;"></div>
+<div class="gold-dust" style="left:50%; animation-delay:5s; animation-duration:18s;"></div>
+<div class="gold-dust" style="left:80%; animation-delay:2s; animation-duration:14s;"></div>
+</div>
+<div class="hero-content-center reveal-on-scroll visible">
+<div class="hero-pre-title" style="border-color: rgba(252, 211, 77, 0.3); color: #FCD34D;">
+                    ★ LEMBAGA RESMI TERVERIFIKASI
+                </div>
+<h1 class="hero-title-dark">
+                    Satu Akses Menguasai <br/>
+<span class="text-gold-metallic">Administrasi &amp; Digital Marketing</span>.
+                </h1>
+<p class="hero-desc-dark">
+                    Solusi lengkap untuk lolos seleksi administrasi kerja (CPNS/BUMN) dan membangun bisnis digital mandiri. Resmi, bersertifikat, dan tanpa biaya bulanan.
+                </p>
+<div style="display: flex; justify-content: center; gap: 20px;">
+<button class="sf-btn btn-glow-gold" onclick="document.getElementById('next-view').scrollIntoView({behavior:'smooth'})">
+                        BUKA PINTU AKSES ↓
+                    </button>
+<button class="sf-btn sf-btn-outline hero-btn-outline" onclick="document.getElementById('tour-office').scrollIntoView({behavior:'smooth'})">
+                        LIHAT KOLEKSI
+                    </button>
+</div>
+<div class="trust-bar-container" style="opacity: 1; transform: none;">
+<span class="trust-label">RESMI &amp; DIAKUI PEMERINTAH:</span>
+<div class="trust-logos">
+<img alt="Kemnaker RI" class="trust-logo-img" src="https://upload.wikimedia.org/wikipedia/commons/9/98/Logo_Kementerian_Ketenagakerjaan_%282016%29.png" title="Lembaga Pelatihan Kerja Terdaftar (VIN)"/>
+<img alt="Kemdikbud" class="trust-logo-img" src="https://upload.wikimedia.org/wikipedia/commons/e/eb/Logo-Tut-Wuri-Handayani-PNG-Warna.png" title="Satuan Pendidikan Nonformal Terakreditasi (NPSN)"/>
+</div>
+</div>
+</div>
+<div class="monolith-stage">
+<div class="crystal-block">
+<div class="c-face cf-back"></div>
+<div class="crystal-content">
+<div class="float-icon depth-back"><img alt="Word" src="https://upload.wikimedia.org/wikipedia/commons/e/e8/Microsoft_Office_Word_%282025%E2%80%93present%29.svg"/></div>
+<div class="float-icon depth-mid"><img alt="Excel" src="https://upload.wikimedia.org/wikipedia/commons/6/60/Microsoft_Office_Excel_%282025%E2%80%93present%29.svg"/></div>
+<div class="float-icon depth-back"><img alt="PPT" src="https://upload.wikimedia.org/wikipedia/commons/d/df/Microsoft_Office_PowerPoint_%282025%E2%80%93present%29.svg"/></div>
+<div class="float-icon depth-front icon-centerpiece">
+<svg fill="white" height="40" viewBox="0 0 24 24" width="40">
+<path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"></path>
+</svg>
+</div>
+<div class="float-icon depth-back"><img alt="Shopee" src="https://upload.wikimedia.org/wikipedia/commons/0/0e/Shopee_logo.svg"/></div>
+<div class="float-icon depth-mid"><img alt="TikTok" src="https://cdn.icon-icons.com/icons2/3041/PNG/512/tiktok_logo_icon_189233.png"/></div>
+<div class="float-icon depth-back"><img alt="CapCut" src="https://upload.wikimedia.org/wikipedia/commons/1/1c/Capcut-icon.svg"/></div>
+</div>
+<div class="c-face cf-front">
+<div class="glass-glare"></div>
+<div class="corner-accent c-tl"></div>
+<div class="corner-accent c-tr"></div>
+<div class="corner-accent c-bl"></div>
+<div class="corner-accent c-br"></div>
+</div>
+</div>
+</div>
+<div class="floor-shadow"></div>
+<div class="hero-bottom-fade"></div>
+</div>
+<div class="section-pain" id="next-view" style="background-color: #Fdfcfc;">
+<div class="sf-container">
+<div class="section-header-center" style="max-width: 700px; margin: 0 auto 60px;">
+<span class="sf-badge" style="background: transparent; border: 1px solid var(--danger); color: var(--danger); margin-bottom: 16px;">
+                        ⚠️ REALITA LAPANGAN
+                    </span>
+<h2 class="sf-h2 serif-heading">
+                        Hambatan Karir: <br/>Cara Lama yang Tidak Efektif.
+                    </h2>
+<p class="sf-p" style="font-size: 1rem;">
+                        Di era kompetitif, skill tanpa bukti legal adalah sia-sia. Jangan biarkan dua hal ini menghambat potensi penghasilan Anda.
+                    </p>
+</div>
+<div class="pain-grid">
+<div class="archive-card reveal-on-scroll">
+<div style="display:flex; justify-content: space-between; align-items: start;">
+<div>
+<h3 class="sf-h3" style="font-family: 'Playfair Display', serif !important; font-size: 1.5rem !important;">Gagal Administrasi</h3>
+<div style="font-size: 0.75rem; font-weight:700; text-transform: uppercase; letter-spacing: 1px; color: var(--danger); margin-top: 4px;">RISIKO TINGGI</div>
+</div>
+<div class="archive-num">I</div>
+</div>
+<div style="margin-top: 24px; border-top: 1px solid #F5F5F4; padding-top: 20px;">
+<p style="font-weight:600; color:var(--text-primary); margin-bottom:10px; font-size: 1rem;">
+                                "Skill jago tapi sertifikat tidak valid? Otomatis gugur."
+                            </p>
+<ul style="color:var(--text-secondary); font-size:0.9rem; line-height:1.6; list-style:none; padding:0; margin-left: 0;">
+<li style="margin-bottom: 8px; display: flex; gap: 10px;">
+<span style="color: var(--danger);">✕</span> Verifikator CPNS/BUMN hanya mengakui sertifikat LKP resmi (VIN/NPSN).
+                                </li>
+<li style="display: flex; gap: 10px;">
+<span style="color: var(--danger);">✕</span> Sertifikat seminar/bootcamp seringkali tidak memiliki kekuatan hukum di pemberkasan.
+                                </li>
+</ul>
+</div>
+</div>
+<div class="archive-card reveal-on-scroll delay-100">
+<div style="display:flex; justify-content: space-between; align-items: start;">
+<div>
+<h3 class="sf-h3" style="font-family: 'Playfair Display', serif !important; font-size: 1.5rem !important;">Pemborosan Budget</h3>
+<div style="font-size: 0.75rem; font-weight:700; text-transform: uppercase; letter-spacing: 1px; color: var(--danger); margin-top: 4px;">BIAYA OPERASIONAL BENGKAK</div>
+</div>
+<div class="archive-num">II</div>
+</div>
+<div style="margin-top: 24px; border-top: 1px solid #F5F5F4; padding-top: 20px;">
+<p style="font-weight:600; color:var(--text-primary); margin-bottom:10px; font-size: 1rem;">
+                                "Keuntungan bisnis habis hanya untuk bayar vendor hal sepele."
+                            </p>
+<ul style="color:var(--text-secondary); font-size:0.9rem; line-height:1.6; list-style:none; padding:0; margin-left: 0;">
+<li style="margin-bottom: 8px; display: flex; gap: 10px;">
+<span style="color: var(--danger);">✕</span> Bayar jasa desain feed/video mahal, padahal bisa dikerjakan sendiri dalam 5 menit.
+                                </li>
+<li style="display: flex; gap: 10px;">
+<span style="color: var(--danger);">✕</span> Tergantung pada orang lain membuat bisnis lambat bergerak.
+                                </li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="section-value">
+<div class="sf-container">
+<div class="section-header-center">
+<span class="sf-badge badge-navy" style="margin-bottom: 16px;">SOLUSI TERINTEGRASI</span>
+<h2 class="sf-h2 serif-heading">Standar Kompetensi Modern.</h2>
+<p class="sf-p" style="max-width: 600px; margin: 0 auto;">
+                        Kurikulum yang dirancang untuk satu tujuan: Memberi Anda daya tawar tinggi di dunia kerja dan bisnis.
+                    </p>
+</div>
+<div class="value-grid">
+<div class="method-card reveal-on-scroll">
+<div class="method-num">01</div>
+<h3 class="sf-h3">Legalitas Negara</h3>
+<p class="sf-p" style="font-size: 0.95rem; margin-bottom: 0;">
+<strong>Aman Seleksi CPNS &amp; BUMN.</strong> Sertifikat keluaran LKP resmi yang terdaftar di Kemdikbud (NPSN) &amp; Kemnaker (VIN). Dokumen Anda valid dan diakui verifikator.
+                        </p>
+</div>
+<div class="method-card reveal-on-scroll delay-100">
+<div class="method-num">02</div>
+<h3 class="sf-h3">Kemandirian Digital</h3>
+<p class="sf-p" style="font-size: 0.95rem; margin-bottom: 0;">
+<strong>Hemat Jutaan Rupiah.</strong> Pangkas biaya vendor. Kuasai desain (Canva/Photoshop) dan editing video (CapCut) untuk membuat konten promosi bisnis Anda sendiri.
+                        </p>
+</div>
+<div class="method-card reveal-on-scroll delay-200">
+<div class="method-num">03</div>
+<h3 class="sf-h3">Efisiensi Kerja</h3>
+<p class="sf-p" style="font-size: 0.95rem; margin-bottom: 0;">
+<strong>Kerja 10x Lebih Cepat.</strong> Bukan sekadar mengetik. Kuasai rumus Excel canggih, Mail Merge, dan AI tools untuk menyelesaikan tumpukan tugas administrasi dalam hitungan menit.
+                        </p>
+</div>
+</div>
+</div>
+</div>
+<div class="grand-theater-stage" id="theaterStage">
+<div class="theater-backdrop">
+<div class="theater-noise"></div>
+<div class="theater-texture"></div>
+<div class="theater-spotlight"></div>
+</div>
+<div class="tour-transparent-section office-zone" id="tour-office">
+<div class="sf-container">
+<div class="tour-split-layout">
+<div class="tour-content">
+<h2 class="sf-h2" style="color:white !important;">Masteri Administrasi Perkantoran.</h2>
+<p class="sf-p" style="margin-bottom: 20px; color:rgba(255,255,255,0.8) !important;">
+                                Program pendidikan vokasi standar LKP. Kuasai Microsoft Office (Word, Excel, PPT) untuk kebutuhan administrasi kerja harian, skripsi, hingga tes CPNS &amp; BUMN.
+                            </p>
+<div class="impact-metrics" style="border-color: rgba(255,255,255,0.1);">
+<div class="metric-item">
+<span class="metric-val" style="color:white;">124.272+</span>
+<span class="metric-label" style="color:rgba(255,255,255,0.6);">Alumni Terdaftar</span>
+</div>
+<div class="metric-item">
+<span class="metric-val" style="color:white;">4.9/5.0</span>
+<span class="metric-label" style="color:rgba(255,255,255,0.6);">Rating Kepuasan</span>
+</div>
+<div class="metric-item">
+<span class="metric-val" style="color:white;">LKP Resmi</span>
+<span class="metric-label" style="color:rgba(255,255,255,0.6);">Status Lembaga</span>
+</div>
+</div>
+<div class="museum-frame" onclick="openLightbox('https://kelas.kursusdigital.id/wp-content/uploads/2025/08/Contoh-Sertifikat-Kursus-Office-LKP-Ifan-Jaya-e1756202925732-600x425.jpg')" style="background: rgba(255,255,255,0.05); border-color: rgba(255,255,255,0.1); margin-bottom: 60px;">
+<img alt="Sertifikat LKP" class="artifact-img" src="https://kelas.kursusdigital.id/wp-content/uploads/2025/08/Contoh-Sertifikat-Kursus-Office-LKP-Ifan-Jaya-e1756202925732-600x425.jpg"/>
+<div class="museum-plaque" style="background:var(--brand-gold); color:white; border:none;">CONTOH SERTIFIKAT KELULUSAN</div>
+</div>
+<div style="padding-top: 20px; border-top: 1px solid rgba(255,255,255,0.1);">
+<div class="credibility-plaque" style="background: #FFFAEB; border: 1px solid #D97706;">
+<div class="plaque-header">
+<svg fill="none" height="24" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" width="24">
+<path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+<polyline points="22 4 12 14.01 9 11.01"></polyline>
+</svg>
+<span>TERDAFTAR RESMI KEMENDIKBUD</span>
+</div>
+<div class="plaque-body">
+<div class="legal-row">
+<div>
+<div class="legal-label">Lembaga Penyelenggara</div>
+<div style="display:flex; align-items:center; gap:10px; margin-top:6px;">
+<img alt="Logo Ifan Jaya" class="lkp-logo-inline" src="https://kursusdigital.id/wp-content/uploads/2024/04/avatar_user_99364_1713687583-200x200.png"/>
+<div style="font-weight:800; color:#1e293b; font-size:1.1rem; letter-spacing:-0.5px;">LKP IFAN JAYA</div>
+</div>
+</div>
+<div style="text-align:right;">
+<img alt="Tut Wuri" src="https://upload.wikimedia.org/wikipedia/commons/e/eb/Logo-Tut-Wuri-Handayani-PNG-Warna.png" width="40"/>
+</div>
+</div>
+<div class="legal-row">
+<div>
+<div class="legal-label">Nomor NPSN</div>
+<div class="legal-value">K5658689</div>
+</div>
+<a class="verify-link" href="https://referensi.data.kemendikdasmen.go.id/pendidikan/npsn/K5658689" target="_blank">Verifikasi Data →</a>
+</div>
+<div class="legal-row">
+<div>
+<div class="legal-label">Nomor VIN (Kemnaker)</div>
+<div class="legal-value">2003352702</div>
+</div>
+<a class="verify-link" href="https://sintala.kemnaker.go.id/index.php/front/profile?data=7d8b3615c9374cb6d950789c2e72a322" target="_blank">Verifikasi Data →</a>
+</div>
+</div>
+</div>
+</div>
+<div class="tech-specs" style="background:rgba(255,255,255,0.05); border-color:rgba(255,255,255,0.1);">
+<div class="spec-header" style="color:rgba(255,255,255,0.7);">
+<svg fill="none" height="16" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" width="16">
+<circle cx="12" cy="12" r="10"></circle>
+<path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path>
+<line x1="12" x2="12.01" y1="17" y2="17"></line>
+</svg>
+                                    PROTOKOL PELAKSANAAN
+                                </div>
+<ul class="spec-list" style="margin-left: 0;">
+<li class="spec-item" style="border-color:rgba(255,255,255,0.1);">
+<span class="spec-q" style="color:white;">Metode Belajar?</span>
+<span class="spec-a" style="color:rgba(255,255,255,0.8);">Video E-Course (Fleksibel, bisa diulang)</span>
+</li>
+<li class="spec-item" style="border-color:rgba(255,255,255,0.1);">
+<span class="spec-q" style="color:white;">Kapan Sertifikat?</span>
+<span class="spec-a" style="color:rgba(255,255,255,0.8);">Setelah Post-Test Online</span>
+</li>
+<li class="spec-item" style="border-color:rgba(255,255,255,0.1);">
+<span class="spec-q" style="color:white;">Ada Deadline?</span>
+<span class="spec-a" style="color:rgba(255,255,255,0.8);">Tidak ada. Akses lifetime</span>
+</li>
+</ul>
+</div>
+</div>
+<div class="sticky-podium">
+<h3 class="podium-title">Karir Profesional</h3>
+<div style="margin: 24px 0; border-top: 1px solid var(--brand-gold); border-bottom: 1px solid var(--brand-gold); padding: 20px 0;">
+<p style="font-style: italic; text-align: center; margin: 0;">
+                                    "Skill wajib administrasi perkantoran. Kunci valid untuk lolos seleksi berkas CPNS/BUMN dan promosi jabatan."
+                                </p>
+</div>
+<button class="sf-btn sf-btn-primary" onclick="document.getElementById('pricing-anchor').scrollIntoView({behavior: 'smooth'})" style="width: 100%;">
+                                Amankan Sertifikat LKP ↓
+                            </button>
+<div style="text-align: center; margin-top: 12px; font-size: 0.75rem; color: var(--text-muted);">
+                                Status: <span style="color: green; font-weight: 700;">Terverifikasi Negara</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="tour-transparent-section skill-zone" id="tour-business">
+<div class="sf-container">
+<div class="tour-split-layout">
+<div class="tour-content">
+<h2 class="sf-h2" style="color:white !important;">Digital Marketing &amp; Konten.</h2>
+<p class="sf-p" style="margin-bottom: 30px; font-size: 1.05rem; color:rgba(255,255,255,0.8) !important;">
+                                Perpustakaan skill yang mencakup hampir seluruh aspek kebutuhan industri digital saat ini. Akses 50+ Kelas &amp; 1.180+ Video Materi: Cara jualan di Shopee/TikTok, desain Canva, hingga edit video CapCut.
+                            </p>
+<div class="impact-metrics" style="border-color: rgba(255,255,255,0.1);">
+<div class="metric-item">
+<span class="metric-val" style="color:white;">40.900+</span>
+<span class="metric-label" style="color:rgba(255,255,255,0.6);">Member Aktif</span>
+</div>
+<div class="metric-item">
+<span class="metric-val" style="color:white;">50+</span>
+<span class="metric-label" style="color:rgba(255,255,255,0.6);">Kelas Materi</span>
+</div>
+<div class="metric-item">
+<span class="metric-val" style="color:white;">1.180+</span>
+<span class="metric-label" style="color:rgba(255,255,255,0.6);">Video Modul</span>
+</div>
+</div>
+<div class="museum-frame" onclick="openLightbox('https://skillpedia.id/wp-content/uploads/2024/07/contoh-sertifikat-skillpedia-indonesia-1536x1138.jpg')" style="background: rgba(255,255,255,0.05); border-color: rgba(255,255,255,0.1); margin-bottom: 60px;">
+<img alt="Sertifikat Skill" class="artifact-img" src="https://skillpedia.id/wp-content/uploads/2024/07/contoh-sertifikat-skillpedia-indonesia-1536x1138.jpg" style="opacity: 0.9;"/>
+<div class="museum-plaque" style="background: var(--brand-gold); color: white; border: none;">CONTOH SERTIFIKAT KOMPETENSI</div>
+</div>
+<div style="padding-top: 20px; border-top: 1px solid rgba(255,255,255,0.1);">
+<div class="module-category">
+<span class="cat-title" style="color:rgba(255,255,255,0.6); border-color:rgba(255,255,255,0.1);">OFFICE &amp; PRODUKTIVITAS</span>
+<div class="module-grid">
+<div class="module-pill">📘 Word Dasar</div>
+<div class="module-pill">Word Lanjutan</div>
+<div class="module-pill">📗 Microsoft Excel</div>
+<div class="module-pill">📙 PowerPoint</div>
+<div class="module-pill">Desain &amp; Animasi PPT</div>
+<div class="module-pill">Google Docs</div>
+<div class="module-pill">Google Spreadsheet</div>
+<div class="module-pill">Google Slide HP</div>
+</div>
+</div>
+<div class="module-category">
+<span class="cat-title" style="color:rgba(255,255,255,0.6); border-color:rgba(255,255,255,0.1);">DIGITAL MARKETING &amp; ADS</span>
+<div class="module-grid">
+<div class="module-pill">🚀 Digital Mkt Fundamentals</div>
+<div class="module-pill pill-interactive" onclick="openLightbox('https://youtu.be/NfJWABHdPM4', 'video')">👜 Jualan di Shopee<span style="color:var(--brand-gold); margin-left:4px;">▶</span></div>
+<div class="module-pill">Jualan di TikTok Shop</div>
+<div class="module-pill pill-interactive" onclick="openLightbox('https://youtu.be/kZtqiclKDf0', 'video')">Meta Ads (FB/IG)<span style="color:var(--brand-gold); margin-left:4px;">▶</span></div>
+<div class="module-pill">Google Ads</div>
+<div class="module-pill">WhatsApp Marketing</div>
+<div class="module-pill">SEO (Search Engine)</div>
+<div class="module-pill">WA Business</div>
+<div class="module-pill">Copywriting</div>
+</div>
+</div>
+<div class="module-category">
+<span class="cat-title" style="color:rgba(255,255,255,0.6); border-color:rgba(255,255,255,0.1);">DESAIN GRAFIS (HP &amp; PC)</span>
+<div class="module-grid">
+<div class="module-pill">Canva Smartphone</div>
+<div class="module-pill">Canva Desktop</div>
+<div class="module-pill pill-interactive" onclick="openLightbox('https://youtu.be/PjmpENf0I-g', 'video')">🎨 Adobe Photoshop<span style="color:var(--brand-gold); margin-left:4px;">▶</span></div>
+<div class="module-pill">Adobe Illustrator</div>
+<div class="module-pill">Inkscape</div>
+<div class="module-pill">PixelLab (HP)</div>
+<div class="module-pill">CorelDraw</div>
+<div class="module-pill">Adobe Lightroom</div>
+<div class="module-pill">Picsart</div>
+<div class="module-pill">Photoshop Express</div>
+</div>
+</div>
+<div class="module-category">
+<span class="cat-title" style="color:rgba(255,255,255,0.6); border-color:rgba(255,255,255,0.1);">VIDEO EDITING &amp; ANIMASI</span>
+<div class="module-grid">
+<div class="module-pill">CapCut Smartphone</div>
+<div class="module-pill pill-interactive" onclick="openLightbox('https://youtu.be/iMqYDoefGgo?si=S4SKEmZHpInw6_0U', 'video')">🎬 CapCut Desktop<span style="color:var(--brand-gold); margin-left:4px;">▶</span></div>
+<div class="module-pill">Adobe Premiere Pro</div>
+<div class="module-pill">Kinemaster</div>
+<div class="module-pill">Alight Motion</div>
+<div class="module-pill">VN Video Editor</div>
+<div class="module-pill">Adobe After Effects</div>
+</div>
+</div>
+<div class="module-category">
+<span class="cat-title" style="color:rgba(255,255,255,0.6); border-color:rgba(255,255,255,0.1);">BAHASA, AI &amp; UMUM</span>
+<div class="module-grid">
+<div class="module-pill">🇬🇧 English Fundamentals</div>
+<div class="module-pill">TOEFL Preparation</div>
+<div class="module-pill">TOEFL Listening</div>
+<div class="module-pill">TOEFL Structure</div>
+<div class="module-pill">TOEFL Reading</div>
+<div class="module-pill">ChatGPT</div>
+<div class="module-pill pill-interactive" onclick="openLightbox('https://youtu.be/TWDXtPYYUe0?si=7kAptYkANGfceW9P', 'video')">🤖 Gemini AI<span style="color:var(--brand-gold); margin-left:4px;">▶</span></div>
+<div class="module-pill">Adobe Premiere Pro</div>
+<div class="module-pill">SKD CPNS/CASN</div>
+</div>
+</div>
+<div class="module-category">
+<span class="cat-title" style="color:rgba(255,255,255,0.6); border-color:rgba(255,255,255,0.1);">WEB &amp; INFORMATIKA</span>
+<div class="module-grid">
+<div class="module-pill pill-interactive" onclick="openLightbox('https://youtu.be/SRVdtUmoXQY?si=NUbqA3XSj1FBqAWe', 'video')">🌐 WordPress Website<span style="color:var(--brand-gold); margin-left:4px;">▶</span></div>
+<div class="module-pill">HTML/CSS/JS</div>
+<div class="module-pill">Data Science Python</div>
+<div class="module-pill">UI/UX Design</div>
+<div class="module-pill">Game Dev (Unity)</div>
+</div>
+</div>
+<div class="module-category">
+<span class="cat-title" style="color:#FCD34D; border-color:#FCD34D;">🎁 BONUS MATERI</span>
+<div class="module-grid">
+<div class="module-pill" style="border-color:#FCD34D; color:#FCD34D;">Ebook Premium Library</div>
+</div>
+</div>
+</div>
+<div class="tech-specs" style="background:rgba(255,255,255,0.05); border-color:rgba(255,255,255,0.1);">
+<div class="spec-header" style="color:rgba(255,255,255,0.7);">
+<svg fill="none" height="16" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" width="16">
+<circle cx="12" cy="12" r="10"></circle>
+<path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path>
+<line x1="12" x2="12.01" y1="17" y2="17"></line>
+</svg>
+                                    SPESIFIKASI AKSES
+                                </div>
+<ul class="spec-list" style="margin-left: 0;">
+<li class="spec-item" style="border-color:rgba(255,255,255,0.1);">
+<span class="spec-q" style="color:white;">Sistem Akses?</span>
+<span class="spec-a" style="color:rgba(255,255,255,0.8);">Sekali bayar, akses Lifetime</span>
+</li>
+<li class="spec-item" style="border-color:rgba(255,255,255,0.1);">
+<span class="spec-q" style="color:white;">Update Materi?</span>
+<span class="spec-a" style="color:rgba(255,255,255,0.8);">Gratis. Otomatis masuk dashboard</span>
+</li>
+<li class="spec-item" style="border-color:rgba(255,255,255,0.1);">
+<span class="spec-q" style="color:white;">Jumlah Sertifikat?</span>
+<span class="spec-a" style="color:rgba(255,255,255,0.8);">Sesuai jumlah modul yang diselesaikan</span>
+</li>
+</ul>
+</div>
+</div>
+<div class="sticky-podium">
+<h3 class="podium-title">Wirausaha Digital</h3>
+<div style="margin: 24px 0; border-top: 1px solid rgba(255,255,255,0.2); border-bottom: 1px solid rgba(255,255,255,0.2); padding: 20px 0;">
+<p style="font-style: italic; text-align: center; margin: 0;">
+                                    "Satu perpustakaan untuk segala kebutuhan digital. Dari nol hingga mahir, tanpa biaya langganan berulang."
+                                </p>
+</div>
+<button class="sf-btn sf-btn-gold" onclick="document.getElementById('pricing-anchor').scrollIntoView({behavior: 'smooth'})" style="width: 100%;">
+                                Mulai Belajar Sekarang ↓
+                            </button>
+<div style="text-align: center; margin-top: 12px; font-size: 0.75rem; color: rgba(255,255,255,0.6);">
+                                Status: <span style="color: var(--brand-gold); font-weight: 700;">Akses Lifetime</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="pricing-section" id="pricing-anchor">
+<div class="sf-container">
+<div style="text-align: center; margin-bottom: 60px;">
+<span class="sf-badge badge-navy" style="margin-bottom: 16px;">THE INVESTMENT</span>
+<h2 class="sf-h2 serif-heading">Kepemilikan Permanen.</h2>
+<p class="sf-p" style="margin: 0 auto; max-width: 600px;">
+                        Pilih tiket masuk Anda. Tanpa biaya tersembunyi, tanpa iuran bulanan.
+                    </p>
+</div>
+<div class="pricing-grid">
+<div class="ticket-card reveal-on-scroll">
+<div style="display:flex; align-items:center; gap:10px; margin-bottom:16px;">
+<img alt="Office" src="https://upload.wikimedia.org/wikipedia/commons/e/e8/Microsoft_Office_Word_%282025%E2%80%93present%29.svg" width="32"/>
+<h3 class="sf-h3" style="font-size: 1.1rem !important; margin:0; color: var(--brand-navy);">Kelas Office Pro</h3>
+</div>
+<div class="sf-badge badge-navy" style="margin-bottom:16px; width:100%; justify-content:center;">
+                            ✓ OFFICIAL LKP CERTIFIED
+                        </div>
+<div style="margin: 16px 0;">
+<span class="price-amount" style="font-size: 1.8rem; font-weight: 800; color: var(--brand-navy);">Rp 35.000</span>
+</div>
+<p style="font-size: 0.85rem; color: var(--text-secondary); line-height: 1.6; margin-bottom: 24px;">
+                            Kurikulum standar administrasi negara. Fokus pada Word, Excel, &amp; PPT untuk kebutuhan dunia kerja formal.
+                        </p>
+<ul style="list-style:none; padding:0; margin-bottom:24px; margin-left: 0; font-size:0.85rem; color:var(--text-secondary);">
+<li style="margin-bottom:8px; display:flex; gap:8px;">
+<svg fill="none" height="16" stroke="green" stroke-width="2" viewBox="0 0 24 24" width="16">
+<polyline points="20 6 9 17 4 12"></polyline>
+</svg>
+<span>Sertifikat LKP (Valid CPNS/BUMN)</span>
+</li>
+<li style="margin-bottom:8px; display:flex; gap:8px;">
+<svg fill="none" height="16" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" width="16">
+<polyline points="20 6 9 17 4 12"></polyline>
+</svg>
+<span>3 Modul Utama (Word, Excel, PPT)</span>
+</li>
+</ul>
+<button class="sf-btn sf-btn-outline" id="btn-pricing-office" style="width:100%; font-size: 0.9rem;">
+                            Ambil Kelas Office
+                        </button>
+</div>
+<div class="black-card reveal-on-scroll delay-100">
+<div style="display: flex; justify-content: space-between; align-items: center;">
+<div class="save-badge">BEST VALUE</div>
+<div style="color: #94A3B8; font-size: 0.8rem; letter-spacing: 1px;">COMPLETE ARCHIVE</div>
+</div>
+<h3 class="vip-title" style="margin-top:10px;">SkillForge Bundle</h3>
+<div style="display: flex; align-items: baseline; gap: 12px;">
+<div class="vip-price price-amount">Rp 50rb</div>
+<div class="price-crossed" style="text-decoration: line-through; color: #64748B; font-size: 1.1rem;">Rp 70.000</div>
+</div>
+<ul class="feature-list" style="margin-left: 0;">
+<li>
+<svg fill="none" height="20" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" width="20">
+<path d="M2 4l3 12h14l3-12-6 7-4-7-4 7-6-7zm3 16h14"></path>
+</svg>
+<span><strong>Termasuk Kelas Office (LKP)</strong></span>
+</li>
+<li>
+<svg fill="none" height="20" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" width="20">
+<rect height="7" width="7" x="3" y="3"></rect>
+<rect height="7" width="7" x="14" y="3"></rect>
+<rect height="7" width="7" x="14" y="14"></rect>
+<rect height="7" width="7" x="3" y="14"></rect>
+</svg>
+<span><strong>Termasuk SkillPedia (Digital)</strong></span>
+</li>
+<li>
+<svg fill="none" height="20" stroke="#FCD34D" stroke-width="2" viewBox="0 0 24 24" width="20">
+<path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"></path>
+</svg>
+<span style="color:#FCD34D;">Double Sertifikat (LKP + Skill)</span>
+</li>
+</ul>
+<button class="btn-ingot" id="btn-pricing-bundle">
+                            AKUISISI SEMUA ASET
+                        </button>
+<div style="text-align: center; margin-top: 16px; font-size: 0.75rem; color: #94A3B8; opacity: 0.8;">
+                            *Opsi paling hemat untuk karir &amp; freelance.
+                        </div>
+</div>
+<div class="ticket-card reveal-on-scroll delay-200">
+<div style="display:flex; align-items:center; gap:10px; margin-bottom:16px;">
+<div style="width:32px; height:32px; background:linear-gradient(135deg, #4f46e5, #9333ea); border-radius:6px; display:flex; align-items:center; justify-content:center;">
+<svg fill="white" height="20" viewBox="0 0 24 24" width="20">
+<path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"></path>
+</svg>
+</div>
+<h3 class="sf-h3" style="font-size: 1.1rem !important; margin:0; color: var(--brand-navy);">SkillPedia Elite</h3>
+</div>
+<div class="sf-badge" style="margin-bottom:16px; width:100%; justify-content:center; background:#F3F4F6; color:var(--text-secondary); border:1px solid #E5E7EB;">
+                            DIGITAL FUNDAMENTAL
+                        </div>
+<div style="margin: 16px 0;">
+<span class="price-amount" style="font-size: 1.8rem; font-weight: 800; color: var(--brand-navy);">Rp 35.000</span>
+</div>
+<p style="font-size: 0.85rem; color: var(--text-secondary); line-height: 1.6; margin-bottom: 24px;">
+                            Toolkit wajib era digital. Belajar dasar desain (Canva), video (CapCut), dan manajemen marketplace/sosmed untuk pemula.
+                        </p>
+<ul style="list-style:none; padding:0; margin-bottom:24px; margin-left: 0; font-size:0.85rem; color:var(--text-secondary);">
+<li style="margin-bottom:8px; display:flex; gap:8px;">
+<svg fill="none" height="16" stroke="green" stroke-width="2" viewBox="0 0 24 24" width="16">
+<polyline points="20 6 9 17 4 12"></polyline>
+</svg>
+<span>Sertifikat Kompetensi Per Modul</span>
+</li>
+<li style="margin-bottom:8px; display:flex; gap:8px;">
+<svg fill="none" height="16" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" width="16">
+<polyline points="20 6 9 17 4 12"></polyline>
+</svg>
+<span>50+ Materi Update Gratis</span>
+</li>
+</ul>
+<button class="sf-btn sf-btn-outline" id="btn-pricing-skillpedia" style="width:100%; font-size: 0.9rem;">
+                            Ambil SkillPedia
+                        </button>
+</div>
+</div>
+</div>
+</div>
+<div class="section-testimonials">
+<div class="sf-container">
+<div style="text-align: center; margin-bottom: 60px;">
+<span class="sf-badge" style="background: transparent; border: 1px solid var(--brand-navy); color: var(--brand-navy); margin-bottom: 16px;">
+                        BUKTI NYATA / REAL RESULTS
+                    </span>
+<h2 class="sf-h2 serif-heading">Ribuan Alumni Telah Membuktikan.</h2>
+<p class="sf-p" style="margin: 0 auto; max-width: 600px;">
+                        Bukan sekadar klaim sepihak. Ini adalah dampak nyata yang mereka rasakan setelah bergabung. Skill baru, karir baru, pendapatan baru.
+                    </p>
+</div>
+<div class="hall-layout">
+<div class="manuscript-grid">
+<div class="manuscript-card reveal-on-scroll">
+<h3 class="manuscript-title">Materi Jelas, Lengkap, Keren</h3>
+<p class="manuscript-body">
+                                "Kelasnya lengkap banget, dengan pembahasan per materi kelas wiiih, dari A sampai Z. Ngajarnya juga beneran, bukan kaya lagi dibacain teks aja. Mudah dimengerti dengan contoh-contoh yang diberikan. Makasih Skillpedia."
+                            </p>
+<div class="manuscript-author">
+<div class="author-line"></div>
+<span>Adi Rizkie Chandra, Member</span>
+</div>
+</div>
+<div class="manuscript-card reveal-on-scroll delay-100">
+<h3 class="manuscript-title">Sukses Selalu</h3>
+<p class="manuscript-body">
+                                "Harga murah, tapi manfaatnya luar biasa.. sangat sangat membantu saya mendesain produk jualan olshop saya. Setelah belajar, saya lebih paham seluk beluk Canva. Terimakasih banyak kak Arsa."
+                            </p>
+<div class="manuscript-author">
+<div class="author-line"></div>
+<span>Efri Yenny, Owner Olshop</span>
+</div>
+</div>
+</div>
+<div class="evidence-grid">
+<div class="evidence-frame reveal-on-scroll delay-200" onclick="openLightbox('https://kelas.kursusdigital.id/wp-content/uploads/2025/08/Screenshot-2023-10-18-193517.jpg')">
+<img alt="Bukti Chat 1" class="evidence-img" src="https://kelas.kursusdigital.id/wp-content/uploads/2025/08/Screenshot-2023-10-18-193517.jpg"/>
+<div class="evidence-label">
+<span class="archive-ref">REF: DOC-002/LKP</span>
+<div class="archive-title">VALIDITAS SERTIFIKAT</div>
+</div>
+</div>
+<div class="evidence-frame reveal-on-scroll delay-300" onclick="openLightbox('https://kelas.kursusdigital.id/wp-content/uploads/2025/08/Screenshot-2023-10-18-193449.jpg')">
+<img alt="Bukti Chat 2" class="evidence-img" src="https://kelas.kursusdigital.id/wp-content/uploads/2025/08/Screenshot-2023-10-18-193449.jpg"/>
+<div class="evidence-label">
+<span class="archive-ref">REF: DOC-003/INV</span>
+<div class="archive-title">EFISIENSI BIAYA</div>
+</div>
+</div>
+<div class="evidence-frame reveal-on-scroll delay-100" onclick="openLightbox('https://kelas.kursusdigital.id/wp-content/uploads/2025/08/Screenshot-2023-10-18-193407.jpg')">
+<img alt="Bukti Chat 3" class="evidence-img" src="https://kelas.kursusdigital.id/wp-content/uploads/2025/08/Screenshot-2023-10-18-193407.jpg"/>
+<div class="evidence-label">
+<span class="archive-ref">REF: DOC-001/CPNS</span>
+<div class="archive-title">BUKTI LOLOS SELEKSI</div>
+</div>
+</div>
+<div class="evidence-frame reveal-on-scroll delay-200" onclick="openLightbox('https://kelas.kursusdigital.id/wp-content/uploads/2025/08/Screenshot-2023-10-18-193354.jpg')">
+<img alt="Bukti Chat 4" class="evidence-img" src="https://kelas.kursusdigital.id/wp-content/uploads/2025/08/Screenshot-2023-10-18-193354.jpg"/>
+<div class="evidence-label">
+<span class="archive-ref">REF: DOC-004/EDU</span>
+<div class="archive-title">METODE PEMBELAJARAN</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="section-faq">
+<div class="sf-container">
+<div style="text-align: center; margin-bottom: 60px;">
+<span class="sf-badge" style="background: white; border: 1px solid var(--border); color: var(--text-muted); margin-bottom: 16px;">
+                        PUSAT INFORMASI
+                    </span>
+<h2 class="sf-h2 serif-heading">Jawaban Keraguan Anda.</h2>
+</div>
+<div class="sf-accordion-wrapper">
+<div class="sf-accordion-item" onclick="this.classList.toggle('open')">
+<div class="sf-acc-header">
+                            Apakah akses bersifat permanen?
+                            <span class="sf-icon">+</span>
+</div>
+<div class="sf-acc-body">
+                            Mutlak. Tidak ada biaya berlangganan (subscription). Sekali Anda mengakuisisi tiket ini, seluruh materi dan pembaruannya menjadi milik Anda selama website hidup.
+                        </div>
+</div>
+<div class="sf-accordion-item" onclick="this.classList.toggle('open')">
+<div class="sf-acc-header">
+                            Kompatibilitas perangkat?
+                            <span class="sf-icon">+</span>
+</div>
+<div class="sf-acc-body">
+                            Platform SkillForge dirancang responsif. Anda dapat mengakses "museum" ini melalui Smartphone, Tablet, maupun Desktop dengan pengalaman yang sama mewahnya.
+                        </div>
+</div>
+<div class="sf-accordion-item" onclick="this.classList.toggle('open')">
+<div class="sf-acc-header">
+                            Dukungan teknis &amp; konsultasi?
+                            <span class="sf-icon">+</span>
+</div>
+<div class="sf-acc-body">
+                            Setiap pemilik akses berhak masuk ke dalam Grup Eksklusif. Para kurator (mentor) dan alumni siap membantu kendala teknis maupun studi kasus Anda.
+                        </div>
+</div>
+</div>
+<div class="guarantee-badge">
+<div style="display: flex; align-items: center; gap: 10px;">
+<svg fill="none" height="20" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" width="20">
+<rect height="11" rx="2" ry="2" width="18" x="3" y="11"></rect>
+<path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+</svg>
+                        SECURE PAYMENT GATEWAY
+                    </div>
+<div style="display: flex; align-items: center; gap: 10px;">
+<svg fill="none" height="20" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" width="20">
+<path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+<polyline points="22 4 12 14.01 9 11.01"></polyline>
+</svg>
+                        OFFICIAL CERTIFIED INSTITUTION
+                    </div>
+</div>
+</div>
+</div>
+</section>
+<footer class="sf-footer">
+<div class="sf-container">
+<div class="footer-content">
+<div class="footer-brand">
+<h2>SkillForge</h2>
+<p class="footer-tagline">
+                        Platform pendidikan vokasi #1 untuk mencetak talenta siap kerja dan pebisnis digital mandiri.
+                    </p>
+</div>
+<div class="footer-meta">
+<div class="footer-copyright">
+                        © 2025 DeTama.id. All Rights Reserved.
+                    </div>
+<div style="margin-top: 12px;">
+<a class="scalev-credit" href="https://scalev.id/watermark?aff_code=DETAMA/" target="_blank">
+<span style="font-size: 0.75rem;">Powered by</span>
+<span class="scalev-logo-text">Scalev</span>
+<svg fill="none" height="12" stroke="currentColor" stroke-width="3" style="margin-left: 2px;" viewBox="0 0 24 24" width="12">
+<path d="M7 17l9.2-9.2M17 17V7H7"></path>
+</svg>
+</a>
+</div>
+</div>
+</div>
+</div>
+</footer>
+<div class="lightbox-overlay" id="sf-lightbox" onclick="handleLightboxClick(event)">
+<div class="lightbox-container">
+<span aria-label="Tutup Tampilan" class="lightbox-close" onclick="closeLightbox()" role="button" tabindex="0">×</span>
+<img alt="Zoom" class="lightbox-content type-img" id="lightbox-img" src="" style="display:none;"/>
+<div class="lightbox-content type-video" id="lightbox-video-wrapper" style="display:none;">
+<iframe allow="autoplay; encrypted-media" allowfullscreen="" id="lightbox-iframe" src=""></iframe>
+</div>
+</div>
+</div>
+<div class="archivist-bar">
+<div class="archive-tabs-container">
+<a class="folder-tab" href="#tour-office" id="tab-office">
+<span class="tab-icon">I</span>
+<span class="tab-text">OFFICE</span>
+</a>
+<a class="folder-tab" href="#tour-business" id="tab-skill">
+<span class="tab-icon">II</span>
+<span class="tab-text">DIGITAL</span>
+</a>
+</div>
+<div class="cta-wrapper">
+<button class="gold-stamp-btn" id="gold-action-btn" onclick="handleMobileAction()">
+<span class="btn-text">BUKA AKSES</span>
+<span class="arch-badge" id="mobile-badge-new" style="display:none;">0</span>
+</button>
+</div>
+</div>
+<div class="side-cart-overlay" id="sideCartOverlay">
+<div class="side-cart" id="sideCart">
+<div class="side-cart-header">
+<h3>Draft Akuisisi</h3>
+<button aria-label="Tutup Keranjang Belanja" class="side-cart-close-btn" id="closeSideCart" onclick="app.closeCart()">
+<svg fill="none" height="24" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" width="24">
+<line x1="18" x2="6" y1="6" y2="18"></line>
+<line x1="6" x2="18" y1="6" y2="18"></line>
+</svg>
+</button>
+</div>
+<div class="side-cart-body">
+</div>
+<div class="side-cart-footer">
+<div class="subtotal">
+<span>Total Investasi</span>
+<span id="cartSubtotal">Rp 0</span>
+</div>
+<a class="sf-btn sf-btn-primary" href="#" id="checkoutBtn" onclick="app.checkout()" style="width: 100%; text-align:center; display:block;">
+                Amankan Kursus Sekarang
+            </a>
+</div>
+</div>
+</div>
+</div>
 </FragmentLayout>

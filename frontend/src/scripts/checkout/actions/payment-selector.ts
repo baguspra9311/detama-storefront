@@ -1,10 +1,8 @@
 import type { PaymentScraper } from '../scrapers/payment-scraper';
-import type { IframeBridge } from '../bridge/iframe-bridge';
 
 export class PaymentSelector {
   constructor(
-    private paymentScraper: PaymentScraper,
-    private bridge: IframeBridge
+    private paymentScraper: PaymentScraper
   ) {}
 
   /**

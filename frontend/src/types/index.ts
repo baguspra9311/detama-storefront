@@ -85,7 +85,7 @@ export interface LatestPurchasesResponse {
 // ===== API Configuration =====
 
 export const API_BASE_URL = 'https://api.detama.id';
-export const CDN_BASE_URL = 'https://cdn.detama.id';
+export const CDN_BASE_URL = 'https://assets.detama.id';
 
 export const ALLOWED_ORIGINS: readonly string[] = [
   'https://detama.id',

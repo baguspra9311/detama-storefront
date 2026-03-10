@@ -1,65 +1,46 @@
-# DeTama Storefront — Monorepo
+# DeTama Storefront
 
-> Landing Pages, Headless Checkout, and Utility Microservice for Scalev-powered stores.
+Landing page & headless checkout system untuk produk digital DeTama.id.
 
-## Architecture
+## Arsitektur
 
-| Workspace     | Stack                         | Purpose                                         |
-| ------------- | ----------------------------- | ----------------------------------------------- |
-| `frontend/`   | Astro + TypeScript + Tailwind | SSG → HTML fragments & CDN assets               |
-| `api-worker/` | Hono.js + Cloudflare Workers  | Validation APIs, webhooks, purchase feed        |
-| `shared/`     | TypeScript                    | Shared type definitions (postMessage protocols) |
+| Layer          | Tech Stack                   | Folder        |
+| -------------- | ---------------------------- | ------------- |
+| Landing Pages  | Raw HTML + CSS + Vanilla JS  | `pages/`      |
+| Checkout Logic | TypeScript + Vite → IIFE     | `scripts/`    |
+| API Backend    | Hono.js + Cloudflare Workers | `api-worker/` |
+| Shared Types   | TypeScript                   | `shared/`     |
 
-## Quick Start
-
-```bash
-# Install all workspace dependencies
-npm install
-
-# Start the Astro dev server
-npm run dev:frontend
-
-# Start the Cloudflare Worker dev server
-npm run dev:worker
-
-# Build everything
-npm run build
-
-# Type-check all workspaces
-npm run typecheck
-```
-
-## Project Structure
+## Struktur Folder
 
 ```
 detama-storefront/
-├── frontend/          → Astro SSG (landing pages + checkout)
-├── api-worker/        → Cloudflare Worker (Hono.js API)
-├── shared/            → Shared TypeScript types
-├── package.json       → npm workspaces root
-└── tsconfig.base.json → Shared strict TS config
+├── pages/          # HTML+CSS identik dari halaman eksisting (paste ke Scalev)
+├── scripts/        # TypeScript checkout logic (build via Vite → IIFE)
+├── api-worker/     # Cloudflare Worker (Hono.js)
+├── shared/         # Shared TypeScript types
+├── dist/           # Build output (gitignored)
+├── vite.config.ts  # Vite bundler config
+└── docs/plans/     # PRD & implementation plans
 ```
 
-## API Routes
+## Scripts
 
-| Route                   | Method | Purpose                         |
-| ----------------------- | ------ | ------------------------------- |
-| `/health`               | GET    | Health check                    |
-| `/webhook/purchase`     | POST   | Scalev purchase webhook         |
-| `/api/latest-purchases` | GET    | Last 5 purchases (social proof) |
-| `/api/validate/email`   | POST   | Email format validation         |
-| `/api/validate/wa`      | POST   | WhatsApp number validation      |
+| Command                 | Keterangan                      |
+| ----------------------- | ------------------------------- |
+| `npm run build:scripts` | Build TypeScript → IIFE bundles |
+| `npm run build:worker`  | Build Cloudflare Worker         |
+| `npm run build`         | Build semua                     |
+| `npm run dev:worker`    | Dev server Cloudflare Worker    |
+| `npm run typecheck`     | TypeScript type checking        |
+| `npm run test`          | Run tests (api-worker)          |
 
-## Environment Variables (API Worker)
+## Workflow
 
-Set via `wrangler secret put`:
+1. Edit file di `pages/` → langsung paste ke Scalev Builder
+2. Edit file di `scripts/` → `npm run build:scripts` → upload `dist/` ke `assets.detama.id`
+3. Edit file di `api-worker/` → `wrangler deploy`
 
-| Variable          | Description                           |
-| ----------------- | ------------------------------------- |
-| `WEBHOOK_SECRET`  | Shared secret for Scalev webhook auth |
-| `WA_API_KEY`      | WhatsApp Gateway API key              |
-| `WA_API_ENDPOINT` | WhatsApp Gateway base URL             |
+## Dokumentasi
 
-## License
-
-Private — All rights reserved.
+- [PRD v4.0](docs/plans/2026-03-10-prd-v4-hybrid-architecture.md) — Single source of truth

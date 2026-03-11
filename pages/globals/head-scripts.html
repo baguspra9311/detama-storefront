@@ -1,0 +1,24 @@
+<!-- Viewport Override -->
+<script>!function(){var e=document.querySelector("meta[name=viewport]");e&&e.remove();var a=document.createElement("meta");a.name="viewport",a.content="width=device-width, initial-scale=1.0, maximum-scale=2, user-scalable=yes",document.head.appendChild(a)}();</script>
+
+<!-- Security / Anti-Debug -->
+<script>
+    document.addEventListener('contextmenu', event => event.preventDefault());
+    document.onkeydown = function (e) {
+        if(e.keyCode == 123) { // F12
+             return false; 
+        } 
+        if(e.ctrlKey && e.shiftKey && e.keyCode == 'I'.charCodeAt(0)){ // Ctrl+Shift+I
+             return false; 
+        } 
+        if(e.ctrlKey && e.shiftKey && e.keyCode == 'C'.charCodeAt(0)){ // Ctrl+Shift+C
+             return false; 
+        } 
+        if(e.ctrlKey && e.shiftKey && e.keyCode == 'J'.charCodeAt(0)){ // Ctrl+Shift+J
+             return false; 
+        } 
+        if(e.ctrlKey && e.keyCode == 'U'.charCodeAt(0)){ // Ctrl+U
+             return false; 
+        }
+    };
+</script>

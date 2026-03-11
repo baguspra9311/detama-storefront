@@ -12,9 +12,9 @@ Hybrid architecture for Scalev landing pages. Combines raw HTML/CSS for the visu
 ## Universal Conventions
 - **No JS Frameworks for UI**: Landing pages must use pure HTML and CSS (no React/Vue/Astro).
 - **Full Inline Standard**: Scalev landing pages must use **Inline CSS & JS** in the final HTML component to guarantee 99+ PageSpeed scores and zero FOUC.
-- **Full Inline Standard**: Scalev pages must be **fully self-contained (Inline CSS + JS)** in the `index.html`.
-  - The separate `.css` and `.js` files in the directory are **mirrors** for version control and IDE support.
-  - The extraction script must maintain this synchronization.
+  - **Performance Placement**: Styles must be at the **Top**, and Scripts must be at the **Bottom** of the HTML fragment.
+  - **Mirroring**: Separate `.css` and `.js` files are **mirrors** for version control and IDE support.
+  - **Synchronization**: The extraction script must maintain this synchronization.
 - **Global Scripts**: Scripts used across multiple pages (e.g., anti-debug, viewport overrides) should be isolated in `pages/globals/` to be deployed to Scalev's Custom Head Script.roduction.
 - **Client Scripts**: Complex logic is compiled via Vite into IIFE bundles. These bundles are mirrored in the pages' HTML for production.
 - **Backend API**: Cloudflare Worker handles sensitive logic (payments, sync, database).

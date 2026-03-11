@@ -72,28 +72,31 @@ https.get(URL, (res) => {
     
     htmlContent = htmlContent.trim();
     
-    // Full Inline Strategy: CSS & JS inlined for maximum PageSpeed 99 and zero FOUC
-    const googleFontsImport = "@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Playfair+Display:ital,wght@0,600;0,700;0,800;1,600&display=swap');";
-    
-    // Note: JS is IIFE wrapped to prevent scope pollution
-    const injectedAssets = `<!-- ========================================= -->
-<!-- 1. OPTIMIZED ASSETS (Full Inline CSS & JS) -->
+    // 5. Inject CSS at the top and JS at the bottom (Standard Performance Pattern)
+    const styleTag = `<!-- ========================================= -->
+<!-- 1. OPTIMIZED ASSETS (Inline CSS)         -->
 <!-- ========================================= -->
 <style>
-${googleFontsImport}
-
 ${cssContent.trim()}
 </style>
+`;
 
+    const scriptTag = `
+<!-- ========================================= -->
+<!-- 2. OPTIMIZED ASSETS (Inline JS)          -->
+<!-- ========================================= -->
 <script>
 ${jsContent.trim()}
 </script>
-<!-- ========================================= -->
-
 `;
-    htmlContent = injectedAssets + htmlContent;
 
-    fs.writeFileSync(HTML_OUT, htmlContent, 'utf8');
+    // Re-assemble the HTML
+    // We prepend the style but append the script to prevent render-blocking
+    htmlContent = styleTag + htmlContent.trim() + scriptTag;
+
+    // 6. Write final index.html
+    const outputPath = path.join(__dirname, '../pages/skillforge/index.html');
+    fs.writeFileSync(outputPath, htmlContent, 'utf8');
     console.log(`[+] Saved ${htmlContent.length} bytes to index.html`);
     console.log(`\nExtraction complete! Assets saved to ${OUT_DIR}`);
   });

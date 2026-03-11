@@ -37,31 +37,6 @@ Pada halaman SkillForge di Scalev Builder (slug: `skillforge2`), paste skrip ber
     };
 </script>
 
-<!-- PAGE-SPECIFIC ASSETS (Fonts, CSS, JS) -->
-<!-- Google Fonts (Manrope + Playfair Display) -->
-<script>
-  (function() {
-    var fontLink = document.createElement('link');
-    fontLink.href = 'https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Playfair+Display:ital,wght@0,600;0,700;0,800;1,600&display=swap';
-    fontLink.rel = 'stylesheet';
-    fontLink.as = 'style';
-    document.head.appendChild(fontLink);
-  })();
-</script>
-
-<!-- CSS via fetch+inject -->
-<script>
-  fetch('https://assets.detama.id/skillforge/skillforge.css')
-    .then(r => r.text())
-    .then(css => {
-      var style = document.createElement('style');
-      style.innerHTML = css;
-      document.head.appendChild(style);
-    });
-</script>
-
-<!-- App JS Loader -->
-<script src="https://assets.detama.id/skillforge/skillforge-app.js" defer></script>
 ```
 
 > **Catatan:** Semua diletakkan di dalam tag `<script>` sesuai aturan *custom head* dari Scalev.
@@ -69,7 +44,9 @@ Pada halaman SkillForge di Scalev Builder (slug: `skillforge2`), paste skrip ber
 ## 3. HTML Component (Scalev Builder)
 
 Buka file `pages/skillforge/index.html` dan **Copy** seluruh isinya.
-**Paste** isi HTML tersebut ke dalam widget **Custom HTML Component** pada halaman Scalev Builder Anda. Struktur HTML ini sudah bersih dari inline logic Javascript dan tag referensi `<style>` eksternal.
+**Paste** isi HTML tersebut ke dalam widget **Custom HTML Component** pada halaman Scalev Builder Anda. 
+
+Struktur HTML ini kini sudah memuat tag `<link>` secara langsung di baris teratas untuk memuat Fonts & CSS secara native dan synchronous, yang **mengatasi masalah Flash of Unstyled Content (FOUC)** dan telatnya load font.
 
 ## 4. Verifikasi Akhir
 

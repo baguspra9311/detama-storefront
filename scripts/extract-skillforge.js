@@ -6,7 +6,7 @@ import { fileURLToPath } from 'url';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-const URL = 'https://cdn.detama.id/SkillForgeHomepage.html';
+const URL = 'https://cdn.detama.id/SkillForgeHomepage';
 
 const OUT_DIR = path.join(__dirname, '..', 'pages', 'skillforge');
 const CSS_OUT = path.join(OUT_DIR, 'skillforge.css');
@@ -72,6 +72,20 @@ https.get(URL, (res) => {
     
     htmlContent = htmlContent.trim();
     
+    // Inject CSS, Fonts, and JS directly via HTML tags to prevent FOUC (Flash of Unstyled Content)
+    const injectedAssets = `<!-- ========================================= -->
+<!-- 1. PRELOADER & ASSETS (Fixing FOUC) -->
+<!-- ========================================= -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Playfair+Display:ital,wght@0,600;0,700;0,800;1,600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://assets.detama.id/skillforge/skillforge.css">
+<script src="https://assets.detama.id/skillforge/skillforge-app.js" defer></script>
+<!-- ========================================= -->
+
+`;
+    htmlContent = injectedAssets + htmlContent;
+
     fs.writeFileSync(HTML_OUT, htmlContent, 'utf8');
     console.log(`[+] Saved ${htmlContent.length} bytes to index.html`);
     console.log(`\nExtraction complete! Assets saved to ${OUT_DIR}`);

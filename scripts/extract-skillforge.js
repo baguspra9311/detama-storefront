@@ -72,18 +72,22 @@ https.get(URL, (res) => {
     
     htmlContent = htmlContent.trim();
     
-    // Inline CSS and Fonts to achieve 99 PageSpeed and zero FOUC
+    // Full Inline Strategy: CSS & JS inlined for maximum PageSpeed 99 and zero FOUC
     const googleFontsImport = "@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Playfair+Display:ital,wght@0,600;0,700;0,800;1,600&display=swap');";
     
+    // Note: JS is IIFE wrapped to prevent scope pollution
     const injectedAssets = `<!-- ========================================= -->
-<!-- 1. OPTIMIZED ASSETS (Inline CSS & Async JS) -->
+<!-- 1. OPTIMIZED ASSETS (Full Inline CSS & JS) -->
 <!-- ========================================= -->
 <style>
 ${googleFontsImport}
 
 ${cssContent.trim()}
 </style>
-<script src="https://assets.detama.id/skillforge/skillforge-app.js" defer></script>
+
+<script>
+${jsContent.trim()}
+</script>
 <!-- ========================================= -->
 
 `;

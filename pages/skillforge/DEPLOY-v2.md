@@ -46,7 +46,7 @@ Pada halaman SkillForge di Scalev Builder (slug: `skillforge2`), paste skrip ber
 Buka file `pages/skillforge/index.html` dan **Copy** seluruh isinya.
 **Paste** isi HTML tersebut ke dalam widget **Custom HTML Component** pada halaman Scalev Builder Anda. 
 
-Struktur HTML ini kini sudah memuat **Inline CSS** (tag `<style>`) secara langsung di baris teratas. Strategi ini meniru halaman eksisting untuk mendapatkan **Score Performa 99** dan menghilangkan FOUC secara total karena tidak ada request jaringan eksternal untuk pemuatan gaya awal.
+Struktur HTML ini kini sudah memuat **Full Inline (CSS & JS)** secara langsung di baris teratas. Strategi ini meniru halaman eksisting untuk mendapatkan **Score Performa 99** dan menghilangkan FOUC secara total karena tidak ada request jaringan eksternal (CDN) untuk pemuatan awal. Gaya dan interaktivitas sudah menyatu dalam satu file HTML.
 
 ## 4. Verifikasi Akhir
 

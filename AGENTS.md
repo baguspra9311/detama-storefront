@@ -14,6 +14,7 @@ Hybrid architecture for Scalev landing pages. Combines raw HTML/CSS for the visu
 - **Full Inline Standard**: Scalev landing pages must use **Inline CSS & JS** in the final HTML component to guarantee 99+ PageSpeed scores and zero FOUC.
   - **Performance Placement**: Styles must be at the **Top**, and Scripts must be at the **Bottom** of the HTML fragment.
   - **Mirroring**: Separate `.css` and `.js` files are **mirrors** for version control and IDE support.
+  - **Modular Extraction**: For complex pages (e.g., ScaleMarket with Canvas/Nebula), use modular extraction scripts (`scripts/extract-*.js`) to read components from separate source files and generate the final inlined `index.html`.
   - **Synchronization**: The extraction script must maintain this synchronization.
 - **Global Scripts**: Scripts used across multiple pages (e.g., anti-debug, viewport overrides) should be isolated in `pages/globals/` to be deployed to Scalev's Custom Head Script.roduction.
 - **Client Scripts**: Complex logic is compiled via Vite into IIFE bundles. These bundles are mirrored in the pages' HTML for production.

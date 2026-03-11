@@ -1,3 +1,4 @@
+(function() {
 fetch('https://api.scalev.id/v2/fb-event/', {
             method: 'POST',
             headers: {
@@ -812,6 +813,7 @@ fetch('https://api.scalev.id/v2/fb-event/', {
 
     const stageEl = document.querySelector('.grand-theater-stage');
     if (stageEl) theaterObserver.observe(stageEl);
+})();
 
 window.__NUXT__={};window.__NUXT__.config={public:{baseUrl:"https://app.scalev.id",nexusApiUrl:"https://api.scalev.id/v2",envApp:"production",sentryDSN:"https://10992d731fa6df35f5f5373ec7fdb26e@o1383091.ingest.us.sentry.io/4507119408840704",recaptchaSiteKey:"6LdRblgrAAAAALplvuja_w8gEJsgMK5jldF7tFaV",device:{defaultUserAgent:"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/64.0.3282.39 Safari/537.36",enabled:true,refreshOnResize:false}},app:{baseURL:"/",buildId:"3e887922-7b41-4d46-898e-3d64e89fbfd9",buildAssetsDir:"/_nuxt/",cdnURL:""}};
 

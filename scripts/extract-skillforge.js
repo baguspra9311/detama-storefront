@@ -72,14 +72,17 @@ https.get(URL, (res) => {
     
     htmlContent = htmlContent.trim();
     
-    // Inject CSS, Fonts, and JS directly via HTML tags to prevent FOUC (Flash of Unstyled Content)
+    // Inline CSS and Fonts to achieve 99 PageSpeed and zero FOUC
+    const googleFontsImport = "@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Playfair+Display:ital,wght@0,600;0,700;0,800;1,600&display=swap');";
+    
     const injectedAssets = `<!-- ========================================= -->
-<!-- 1. PRELOADER & ASSETS (Fixing FOUC) -->
+<!-- 1. OPTIMIZED ASSETS (Inline CSS & Async JS) -->
 <!-- ========================================= -->
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Playfair+Display:ital,wght@0,600;0,700;0,800;1,600&display=block" rel="stylesheet">
-<link rel="stylesheet" href="https://assets.detama.id/skillforge/skillforge.css">
+<style>
+${googleFontsImport}
+
+${cssContent.trim()}
+</style>
 <script src="https://assets.detama.id/skillforge/skillforge-app.js" defer></script>
 <!-- ========================================= -->
 

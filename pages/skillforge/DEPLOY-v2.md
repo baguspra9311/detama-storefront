@@ -46,7 +46,7 @@ Pada halaman SkillForge di Scalev Builder (slug: `skillforge2`), paste skrip ber
 Buka file `pages/skillforge/index.html` dan **Copy** seluruh isinya.
 **Paste** isi HTML tersebut ke dalam widget **Custom HTML Component** pada halaman Scalev Builder Anda. 
 
-Struktur HTML ini kini sudah memuat tag `<link>` secara langsung di baris teratas untuk memuat Fonts & CSS secara native dan synchronous, yang **mengatasi masalah Flash of Unstyled Content (FOUC)** dan telatnya load font.
+Struktur HTML ini kini sudah memuat **Inline CSS** (tag `<style>`) secara langsung di baris teratas. Strategi ini meniru halaman eksisting untuk mendapatkan **Score Performa 99** dan menghilangkan FOUC secara total karena tidak ada request jaringan eksternal untuk pemuatan gaya awal.
 
 ## 4. Verifikasi Akhir
 

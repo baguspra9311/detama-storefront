@@ -1,0 +1,30 @@
+
+    :root{ --bg:#0b1220 }
+    html{scroll-behavior:smooth}
+    *,*::before,*::after{box-sizing:border-box}
+    
+    div.relative > div[style*="box-shadow"] {
+        max-width: 100% !important;
+        padding-bottom: 0 !important;
+        margin-bottom: 0 !important;
+        background-color: transparent !important;
+    }
+    div.relative > div[style*="box-shadow"][class*="min-h-screen"] {
+        min-height: auto !important;
+    }
+    .children\:z-1 {
+        margin-bottom: 0 !important;
+    }
+    
+    .scalemarket-wrapper a, .fab-container a {
+      text-decoration: none !important;
+      color: inherit;
+    }
+    
+    * {
+      border-color: var(--border);
+    }
+    body{
+        margin:0;font-family:"Plus Jakarta Sans", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+        background:var(--surface);color:var(--text); 
+    }

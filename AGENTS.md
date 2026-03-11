@@ -16,7 +16,7 @@ Hybrid architecture for Scalev landing pages. Combines raw HTML/CSS for the visu
   - **Mirroring**: Separate `.css` and `.js` files are **mirrors** for version control and IDE support.
   - **Modular Extraction**: For complex pages (e.g., ScaleMarket with Canvas/Nebula), use modular extraction scripts (`scripts/extract-*.js`) to read components from separate source files and generate the final inlined `index.html`.
   - **Synchronization**: The extraction script must maintain this synchronization.
-- **Global Scripts**: Scripts used across multiple pages (e.g., anti-debug, viewport overrides) should be isolated in `pages/globals/` to be deployed to Scalev's Custom Head Script.roduction.
+- **Global Scripts**: Global functionalities like anti-debug (Anti-Inspect) and viewport overrides are strictly separated from individual page components. They reside in `pages/globals/head-scripts.html`. This file acts as the single source of truth for the **Scalev Custom Head Script** applied across all landing pages. Individual page extrators should **never** include these global scripts inline.
 - **Client Scripts**: Complex logic is compiled via Vite into IIFE bundles. These bundles are mirrored in the pages' HTML for production.
 - **Backend API**: Cloudflare Worker handles sensitive logic (payments, sync, database).
 

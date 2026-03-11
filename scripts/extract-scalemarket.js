@@ -14,8 +14,6 @@ const HTML_OUT = path.join(OUT_DIR, 'index.html');
 const CSS_OUT = path.join(OUT_DIR, 'scalemarket.css');
 const JS_OUT = path.join(OUT_DIR, 'scalemarket-app.js');
 
-const TEMPLATE_FILE = path.join(__dirname, 'scalemarket-template.html');
-const ANTI_INSPECT_FILE = path.join(__dirname, 'scalemarket-anti-inspect.js');
 const BODY_FILE = path.join(__dirname, 'scalemarket-body.html');
 const CRITICAL_CSS_FILE = path.join(__dirname, 'scalemarket-critical.css');
 
@@ -38,17 +36,33 @@ async function main() {
     fs.writeFileSync(CSS_OUT, cdnCss, 'utf8');
     fs.writeFileSync(JS_OUT, cdnJs, 'utf8');
 
-    let html = fs.readFileSync(TEMPLATE_FILE, 'utf8');
-    const antiInspect = fs.readFileSync(ANTI_INSPECT_FILE, 'utf8');
     const bodyContent = fs.readFileSync(BODY_FILE, 'utf8');
     const criticalCss = fs.readFileSync(CRITICAL_CSS_FILE, 'utf8');
 
-    html = html.replace('{{CRITICAL_STYLES}}', criticalCss.trim() + "\n" + cdnCss.trim());
-    html = html.replace('{{BODY_CONTENT}}', bodyContent.trim());
-    html = html.replace('{{SCRIPTS}}', antiInspect.trim() + "\n" + cdnJs.trim());
+    // Combine into a pure HTML fragment for Scalev Custom HTML
+    const htmlFragment = `<!-- ========================================= -->
+<!-- 1. OPTIMIZED ASSETS (Inline CSS)          -->
+<!-- ========================================= -->
+<style>
+${criticalCss.trim()}
 
-    fs.writeFileSync(HTML_OUT, html, 'utf8');
-    console.log('[+] Generated optimized index.html');
+${cdnCss.trim()}
+</style>
+
+<!-- ========================================= -->
+<!-- 2. SCALEV COMPONENT HTML BODY             -->
+<!-- ========================================= -->
+${bodyContent.trim()}
+
+<!-- ========================================= -->
+<!-- 3. OPTIMIZED ASSETS (Inline JS)           -->
+<!-- ========================================= -->
+<script>
+${cdnJs.trim()}
+</script>`;
+
+    fs.writeFileSync(HTML_OUT, htmlFragment, 'utf8');
+    console.log('[+] Generated optimized index.html (Pure HTML Fragment)');
   } catch (error) {
     console.error('[!] Extraction failed:', error);
   }

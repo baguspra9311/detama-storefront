@@ -13,20 +13,18 @@ File ini mencerminkan apa yang ada di dalam `index.html`. Jika Anda ingin melaku
 
 ## 2. Custom Head Script (Scalev Builder)
 
-Pada halaman ScaleMarket di Scalev Builder, paste skrip berikut ke dalam bagian **Custom Head Script**. Skrip ini menangani viewport agar responsif di semua perangkat:
+Pada halaman ScaleMarket di Scalev Builder (slug: `scalemarket2`), paste isi dari file **`pages/globals/head-scripts.html`** ke dalam bagian **Custom Head Script**.
 
-```html
-<script>!function(){var e=document.querySelector("meta[name=viewport]");e&&e.remove();var a=document.createElement("meta");a.name="viewport",a.content="width=device-width, initial-scale=1.0, maximum-scale=2, user-scalable=yes",document.head.appendChild(a)}();</script>
-```
+File ini berisi skrip global (Viewport Override & Anti-Debug) yang digunakan di **semua** halaman landing DeTama. Jangan menambahkan skrip anti-inspect secara inline di HTML component.
 
-> **Catatan:** Logika Anti-Inspect (Klik Kanan & F12 Disable) sudah terintegrasi langsung di dalam `index.html` (di bagian bawah), jadi tidak perlu ditambahkan lagi di Custom Head Script kecuali jika ingin diterapkan secara global di level domain.
+> **Catatan:** Jika isi `head-scripts.html` diperbarui, **semua halaman** yang menggunakannya di Scalev Builder harus ikut diperbarui.
 
 ## 3. HTML Component (Scalev Builder)
 
 Buka file `pages/scalemarket/index.html` dan **Copy** seluruh isinya. Isinya sudah mencakup:
 1.  **Critical Styles (Top):** CSS internal + CDN CSS yang sudah di-inline.
 2.  **Modular Body (Middle):** Struktur HTML utama termasuk canvas untuk animasi.
-3.  **App Logic (Bottom):** Anti-inspect + Logika aplikasi (Canvas, Nebula, Aurora, Cart, Voucher) yang sudah di-inline.
+3.  **App Logic (Bottom):** Logika aplikasi (Canvas, Nebula, Aurora, Cart, Voucher) yang sudah di-inline.
 
 **Paste** isi HTML tersebut ke dalam widget **Custom HTML Component** pada halaman Scalev Builder Anda.
 
@@ -35,7 +33,7 @@ Buka file `pages/scalemarket/index.html` dan **Copy** seluruh isinya. Isinya sud
 1.  Buka preview halaman di Scalev Builder.
 2.  **Visual Test:** Pastikan animasi **Plexus Canvas**, **Nebula**, dan **Starfield** berjalan lancar.
 3.  **Logic Test:** Buka Modul Produk, coba tambahkan ke Cart, dan tes fitur tema (Light/Dark mode).
-4.  **Performance Test:** Cek PageSpeed Insights. Target skor Performa adalah **100** karena tidak ada request aset CSS/JS eksternal yang menghambat rendering awal.
-5.  **Security Test:** Coba klik kanan — seharusnya terblokir oleh script anti-inspect yang menyatu di dalam HTML.
+4.  **Performance Test:** Cek PageSpeed Insights. Target skor Performa adalah **100** karena tidak ada request aset CSS/JS eksternal.
+5.  **Security Test:** Coba klik kanan atau tekan `F12` — Global Head Script seharusnya memblokir inspeksi.
 
 Setelah verifikasi sukses, halaman siap dipublikasikan (Publish)!

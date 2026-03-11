@@ -1,56 +1,34 @@
-# SkillForge Migration Deployment Guide
+# SkillForge — Deployment ke Scalev Builder (v2)
 
-This document outlines the steps to deploy the extracted SkillForge assets to production.
+Panduan ini berisi langkah-langkah untuk melakukan migrasi halaman SkillForge ke Arsitektur Hybrid terbaru, dengan menggunakan aset CDN dan script anti-debug global.
 
-## 1. Upload Assets to CDN
+## 1. Upload Aset ke assets.detama.id
 
-Upload the following files to `assets.detama.id`:
+Upload hasil ekstraksi berikut ke Cloudflare Pages project `assets.detama.id` (di dalam subfolder `skillforge/` jika Anda menggunakan struktur folder):
 
-- `pages/skillforge/skillforge.css` -> `https://assets.detama.id/skillforge/skillforge.css`
-- `pages/skillforge/skillforge-app.js` -> `https://assets.detama.id/skillforge/skillforge-app.js`
+- File lokal: `pages/skillforge/skillforge.css` → URL Target: `https://assets.detama.id/skillforge/skillforge.css`
+- File lokal: `pages/skillforge/skillforge-app.js` → URL Target: `https://assets.detama.id/skillforge/skillforge-app.js`
 
-## 2. Setup Custom Head Script in Scalev Builder
+## 2. Custom Head Script (Scalev Builder)
 
-Replace the Custom Head Script in the Scalev Builder for the SkillForge page with the following code. This script loads the required external fonts, injects the CSS stylesheet, and defers loading of the application logic.
+Pada halaman SkillForge di Scalev Builder (slug: `skillforge2`), paste isi dari file **`pages/globals/head-scripts.html`** ke dalam bagian **Custom Head Script**.
 
-```html
-<!-- Load Plus Jakarta Sans Font -->
-<script>
-  (function () {
-    var fontLink = document.createElement("link");
-    fontLink.href =
-      "https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap";
-    fontLink.rel = "stylesheet";
-    fontLink.as = "style";
-    document.head.appendChild(fontLink);
-  })();
-</script>
+File ini berisi skrip global (Viewport Override & Anti-Debug) yang digunakan di **semua** halaman landing DeTama. Jangan menambahkan skrip anti-inspect secara inline di HTML component.
 
-<!-- Inject SkillForge CSS -->
-<script>
-  fetch("https://assets.detama.id/skillforge/skillforge.css")
-    .then((r) => r.text())
-    .then((css) => {
-      var style = document.createElement("style");
-      style.innerHTML = css;
-      document.head.appendChild(style);
-    });
-</script>
+> **Catatan:** Jika isi `head-scripts.html` diperbarui, **semua halaman** yang menggunakannya di Scalev Builder harus ikut diperbarui.
 
-<!-- Load SkillForge Application Logic -->
-<script
-  src="https://assets.detama.id/skillforge/skillforge-app.js"
-  defer
-></script>
-```
+## 3. HTML Component (Scalev Builder)
 
-## 3. Paste HTML Content
+Buka file `pages/skillforge/index.html` dan **Copy** seluruh isinya.
+**Paste** isi HTML tersebut ke dalam widget **Custom HTML Component** pada halaman Scalev Builder Anda. 
 
-Copy the entire contents of `pages/skillforge/index.html` and paste it into the HTML Viewer element within the Scalev Builder.
+Struktur HTML ini kini sudah memuat **Full Inline (CSS & JS)** secara langsung di baris teratas. Strategi ini meniru halaman eksisting untuk mendapatkan **Score Performa 99** dan menghilangkan FOUC secara total karena tidak ada request jaringan eksternal (CDN) untuk pemuatan awal. Gaya dan interaktivitas sudah menyatu dalam satu file HTML.
 
-## 4. Final Visual Verification
+## 4. Verifikasi Akhir
 
-1. Save and publish the page in Scalev.
-2. Visit the live staging/production link.
-3. Verify that the visual appearance matches the original `https://detama.id/skillforge` exactly.
-4. Verify that interactions (buttons, carousels, forms) function as expected.
+1. Publish perubahan pada halaman `skillforge2`.
+2. Buka `https://detama.id/skillforge2` di browser.
+3. Lakukan verifikasi visual: margin, padding, typography, button, dan gambar harus sama persis dengan `https://detama.id/skillforge`.
+4. Test interaksi Cart/Drawer (`Draft Akuisisi`), lightbox modul, akordion FAQ, dsb.
+5. Coba lakukan klik kanan atau tekan `F12` — Global Head Scripts seharusnya secara aktif memblokir inspeksi tersebut.
+6. Bila semua lancar 100%, halaman rilis final sudah direkonstruksi utuh. Anda tinggal mengatur swap slug nantinya!

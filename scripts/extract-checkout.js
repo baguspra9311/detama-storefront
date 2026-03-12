@@ -7,7 +7,7 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 // Target URL for Checkout Parent
-const URL = 'https://cdn.detama.id/CheckoutParent.html';
+const URL = 'https://cdn.detama.id/CheckoutPage';
 
 const OUT_DIR = path.join(__dirname, '..', 'pages', 'checkout');
 const CSS_OUT = path.join(OUT_DIR, 'checkout.css');

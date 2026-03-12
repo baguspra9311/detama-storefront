@@ -9,14 +9,15 @@ TypeScript logic for complex interactive components (e.g., Checkout, Analytics) 
 - Output: `dist/` directory (these are uploaded to `assets.detama.id` CDN)
 
 ## Patterns & Conventions
-- **No UI Frameworks**: Use Vanilla DOM manipulation.
-- **Global Variables**: Scripts often expose APIs globally via IIFE, e.g., `window.DetamaCheckout`.
+- **Interactivity logic**: Built with TypeScript + Vite into IIFE bundles.
+- **Extraction logic**: Node.js scripts (`extract-*.js`) used to assembling HTML fragments from modular sources.
 - **Types**: Use strict TypeScript. Define interfaces for all API payloads and external data structures.
 - **DO**: Architect modular code. e.g., `src/checkout/validators.ts`.
 
 ## Key Files
 - `scripts/build.js` (Multi-entry Vite build configuration)
-- `scripts/checkout/CheckoutPage.ts` (Example entry point)
+- `scripts/extract-skillforge.js` (SkillForge assembly)
+- `scripts/extract-scalemarket.js` (ScaleMarket assembly)
 
 ## JIT Index Hints
 - Find class/function: `rg -n "export (class|function) \w+" scripts/`

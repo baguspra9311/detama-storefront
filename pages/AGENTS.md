@@ -16,8 +16,9 @@ There is no local dev server for pages. We fetch source HTML from production CDN
 
 ## Key Files
 - `pages/globals/head-scripts.html` (Global viewport & anti-debug)
-- `pages/skillforge/index.html` (Example page body)
-- `pages/scalemarket/index.html` (Complex page with canvas/animations)
+- `pages/scalemarket/index.html` (Final inlined HTML fragment)
+- `pages/scalemarket/scalemarket.html` (HTML structure source)
+- `pages/scalemarket/scalemarket.css` (CSS source mirror)
 - `pages/scalemarket/DEPLOY.md` (Standard deployment guide)
 
 ## JIT Index Hints

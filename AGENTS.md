@@ -24,6 +24,7 @@ Hybrid architecture for Scalev landing pages. Combines raw HTML/CSS for the visu
 ### Package Structure
 - Pages (HTML/CSS): `pages/` -> [see pages/AGENTS.md](pages/AGENTS.md)
 - Client Scripts (TS/Vite): `scripts/` -> [see scripts/AGENTS.md](scripts/AGENTS.md)
+- Data (CDN Mirrors): `data/` -> [see data/AGENTS.md](data/AGENTS.md)
 - API Worker (Backend): `api-worker/` -> [see api-worker/AGENTS.md](api-worker/AGENTS.md)
 
 ### Quick Find Commands

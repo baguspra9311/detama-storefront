@@ -1,34 +1,5 @@
-<!-- ========================================= -->
-<!-- 1. OPTIMIZED ASSETS (Inline CSS & Globals)-->
-<!-- ========================================= -->
-
-<!-- Viewport Override -->
-<script>!function(){var e=document.querySelector("meta[name=viewport]");e&&e.remove();var a=document.createElement("meta");a.name="viewport",a.content="width=device-width, initial-scale=1.0, maximum-scale=2, user-scalable=yes",document.head.appendChild(a)}();</script>
-
-<!-- Security / Anti-Debug -->
-<script>
-    document.addEventListener('contextmenu', event => event.preventDefault());
-    document.onkeydown = function (e) {
-        if(e.keyCode == 123) { // F12
-             return false; 
-        } 
-        if(e.ctrlKey && e.shiftKey && e.keyCode == 'I'.charCodeAt(0)){ // Ctrl+Shift+I
-             return false; 
-        } 
-        if(e.ctrlKey && e.shiftKey && e.keyCode == 'C'.charCodeAt(0)){ // Ctrl+Shift+C
-             return false; 
-        } 
-        if(e.ctrlKey && e.shiftKey && e.keyCode == 'J'.charCodeAt(0)){ // Ctrl+Shift+J
-             return false; 
-        } 
-        if(e.ctrlKey && e.keyCode == 'U'.charCodeAt(0)){ // Ctrl+U
-             return false; 
-        }
-    };
-</script>
-
 <style>
-:root{ --bg:#0b1220 }
+    :root{ --bg:#0b1220 }
     html{scroll-behavior:smooth}
     *,*::before,*::after{box-sizing:border-box}
     
@@ -1276,9 +1247,6 @@
     }
 </style>
 
-<!-- ========================================= -->
-<!-- 2. SCALEV COMPONENT HTML BODY             -->
-<!-- ========================================= -->
 <div class="scalemarket-wrapper">
   <div class="sky" aria-hidden="true">
     <canvas id="plexusCanvas" class="plexus-canvas"></canvas>
@@ -1687,17 +1655,15 @@
 </div>
 
 <!-- DATA ISLAND UNTUK SALES NOTIF -->
-
-<!-- ========================================= -->
-<!-- 3. OPTIMIZED ASSETS (Inline JS)           -->
-<!-- ========================================= -->
-<script>
+<script type="application/json" id="purchase-events-data">
 [
     { "buyer": "Dhimas", "item": "ScalPee Theme", "timestamp": "2025-10-09T06:45:17+07:00" },
     { "buyer": "Terry", "item": "ScalPee Theme", "timestamp": "2025-10-04T14:17:11+07:00" },
     { "buyer": "Citra L.", "item": "ScalPee Theme", "timestamp": "2025-10-09T05:55:48+07:00" }
 ]
+</script>
 
+<script type="application/json" id="voucher-data">
 [
   {
     "code": "PO1",
@@ -1724,7 +1690,9 @@
     "isAvailable": true
   }
 ]
+</script>
 
+<script>
 const urlParamsDebug = new URLSearchParams(window.location.search);
 const IS_DEBUG_MODE = urlParamsDebug.has('debug');
 
@@ -3010,3 +2978,4 @@ window.addEventListener('load', () => {
     ScaleMarketApp.init();
 });
 </script>
+<script defer src="https://static.cloudflareinsights.com/beacon.min.js/v8c78df7c7c0f484497ecbca7046644da1771523124516" integrity="sha512-8DS7rgIrAmghBFwoOTujcf6D9rXvH8xm8JQ1Ja01h9QX8EzXldiszufYa4IFfKdLUKTTrnSFXLDkUEOTrZQ8Qg==" data-cf-beacon='{"version":"2024.11.0","token":"5ef4bc3bbeaa4231b6e2a37627d284fe","r":1,"server_timing":{"name":{"cfCacheStatus":true,"cfEdge":true,"cfExtPri":true,"cfL4":true,"cfOrigin":true,"cfSpeedBrain":true},"location_startswith":null}}' crossorigin="anonymous"></script>

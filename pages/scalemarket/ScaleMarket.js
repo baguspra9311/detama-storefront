@@ -1,36 +1,3 @@
-[
-    { "buyer": "Dhimas", "item": "ScalPee Theme", "timestamp": "2025-10-09T06:45:17+07:00" },
-    { "buyer": "Terry", "item": "ScalPee Theme", "timestamp": "2025-10-04T14:17:11+07:00" },
-    { "buyer": "Citra L.", "item": "ScalPee Theme", "timestamp": "2025-10-09T05:55:48+07:00" }
-]
-
-[
-  {
-    "code": "PO1",
-    "title": "Diskon Launching Tahap 1",
-    "desc": "Hanya untuk 10 pembeli pertama.",
-    "isAvailable": true
-  },
-  {
-    "code": "PO2",
-    "title": "Diskon Launching Tahap 2",
-    "desc": "Untuk 15 pembeli berikutnya.",
-    "isAvailable": true
-  },
-  {
-    "code": "PO3",
-    "title": "Diskon Launching Tahap 3",
-    "desc": "Untuk 20 pembeli berikutnya.",
-    "isAvailable": true
-  },
-  {
-    "code": "PO4",
-    "title": "Diskon Launching Tahap 4",
-    "desc": "Untuk 30 pembeli berikutnya.",
-    "isAvailable": true
-  }
-]
-
 const urlParamsDebug = new URLSearchParams(window.location.search);
 const IS_DEBUG_MODE = urlParamsDebug.has('debug');
 

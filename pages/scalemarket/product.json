@@ -1,0 +1,211 @@
+{
+  "scalemarket": {
+    "name": "ScaleMarket",
+    "icon": "https://cdn.scalev.id/business_files/aMT9VueGZ3klINJBtE5s6oHx/1760057133110-favicon.png",
+    "url": "https://detama.id/scalemarket",
+    "products": [
+      {
+        "id": "scalpee-theme",
+        "name": "ScalPee: Shopee Style",
+        "desc": "Template premium bertema Shopee untuk Scalev. Product page, checkout, hingga detail belanja → rasanya persis kayak buka Shopee! Pengunjung langsung familiar, belanja nyaman, konversi ngebut. Cukup inject template, aktifkan, dan nikmati e-commerce rasa marketplace besar!",
+        "badge": "Best Seller",
+        "image": "https://placehold.co/120x120/0B1220/22D3EE?text=ScalPee",
+        "features": ["All-in-One", "Trust UI", "1x Inject"],
+        "comingSoon": false,
+        "variants": [
+          {
+            "id": "345973",
+            "name": "Trial",
+            "price": 10000,
+            "sku": "DeTama.id - ScaleMarket - ScalPee - Trial"
+          },
+          {
+            "id": "346164",
+            "name": "Final",
+            "price": 57000,
+            "sku": "DeTama.id - ScaleMarket - ScalPee - Final"
+          },
+          {
+            "id": "null",
+            "name": "Agency",
+            "price": 249000,
+            "sku": "DeTama.id - ScaleMarket - ScalPee - Agency"
+          }
+        ],
+        "demoUrls": {
+          "noVariant": "https://scalpee.myscalev.com/p/novarian",
+          "variant": "https://scalpee.myscalev.com/p/varian",
+          "bundle": "https://scalpee.myscalev.com/b/bundle"
+        }
+      },
+      {
+        "id": "scaletok-theme",
+        "name": "ScaleTok: TikTok Shop Style",
+        "desc": "Standar baru landing page Scalev. Hadirkan feel & flow UX sehalus TikTok Shop dengan flow varian paling advanced. Dibuat untuk konversi ngebut, bukan 'nanggung'.",
+        "badge": "New",
+        "image": "https://placehold.co/120x120/0B1220/0EA5A1?text=ScaleTok",
+        "features": ["Mobile First", "Swipeable", "Quick Checkout"],
+        "comingSoon": false,
+        "variants": [
+          {
+            "id": "null",
+            "name": "Trial",
+            "price": 10000
+          },
+          {
+            "id": "346166",
+            "name": "Pre Order",
+            "price": 99000,
+            "sku": "DeTama.id - ScaleMarket - ScaleTok - Final"
+          },
+          {
+            "id": "null",
+            "name": "Agency",
+            "price": 249000
+          }
+        ],
+        "demoUrls": {
+          "noVariant": "https://scaletok.myscalev.com/p/novarian",
+          "variant": "https://scaletok.myscalev.com/p/varian",
+          "bundle": "https://scaletok.myscalev.com/b/bundle"
+        }
+      },
+      {
+        "id": "scalenews-theme",
+        "name": "Scalenews Theme",
+        "desc": "Template gaya portal berita. Ideal untuk produk digital, infoproduk, atau artikel dengan CTA terintegrasi.",
+        "badge": "Coming Soon",
+        "image": "",
+        "features": ["Content First", "SEO Friendly", "Integrated CTA"],
+        "comingSoon": true,
+        "variants": [],
+        "waitlist": true
+      },
+      {
+        "id": "noteblock-bio",
+        "name": "NoteBlock Link Bio",
+        "desc": "Tampilan link bio minimalis ala Notion, bisa ganti tema Light atau Dark sesuai selera.",
+        "badge": "Landing Hero",
+        "image": "https://cdn.scalev.id/Image/Twq9CPxskrnO7fwxlh5QNFWbfnIHnUAH8aLVxLRAanU/1745410857462-cover_teplate222.webp",
+        "features": ["Link Bio", "Notion", "Mobile"],
+        "comingSoon": false,
+        "variants": [
+          {
+            "id": "65434",
+            "name": "NoteBlock Link Bio",
+            "price": 69000,
+            "sku": "NoteBlock Link Bio - Template + Panduan"
+          }
+        ],
+        "demoUrls": {
+          "noVariant": "https://fitri-effendi.myscalev.com/nb",
+          "variant": "https://fitri-effendi.myscalev.com/nb",
+          "bundle": "https://fitri-effendi.myscalev.com/nb"
+        }
+      },
+      {
+        "id": "gridify-storefront",
+        "name": "Gridify Storefront",
+        "desc": "Cocok buat kamu yang pengen jualan dan nampilin daftar produk fisik & digital.",
+        "badge": "Landing Hero",
+        "image": "https://cdn.scalev.id/Image/bPnnA57Hd-aRyYVWTQa6R5Exuh_OF5WOC6mEBkIaSKU/1744641378460-a.webp",
+        "features": ["Storefront", "E-Commerce", "Mobile"],
+        "comingSoon": false,
+        "variants": [
+          {
+            "id": "62981",
+            "name": "Gridify Storefront",
+            "price": 69000,
+            "sku": "Gridify Storefront - Template + Panduan"
+          }
+        ],
+        "demoUrls": {
+          "noVariant": "https://fitri-effendi.myscalev.com/gs",
+          "variant": "https://fitri-effendi.myscalev.com/gs",
+          "bundle": "https://fitri-effendi.myscalev.com/gs"
+        }
+      },
+      {
+        "id": "biolink-creator",
+        "name": "Bio Link Creator",
+        "desc": "Cocok buat kamu yang pengen jualan dan nampilin daftar produk fisik & digital.",
+        "badge": "Landing Hero",
+        "image": "https://cdn.scalev.id/Image/OalraQLKgn6egjlzuixgzqUEtnZprIO-rp3zKhQ4dYw/1742890705452-c1.webp",
+        "features": ["Link Bio", "Social Media", "Content Creator"],
+        "comingSoon": false,
+        "variants": [
+          {
+            "id": "58919",
+            "name": "Bio Link Creator",
+            "price": 69000,
+            "sku": "Bio Link Creator - Template + Panduan"
+          }
+        ],
+        "demoUrls": {
+          "noVariant": "https://fitri-effendi.myscalev.com/cp-demo",
+          "variant": "https://fitri-effendi.myscalev.com/cp-demo",
+          "bundle": "https://fitri-effendi.myscalev.com/cp-demo"
+        }
+      }
+    ]
+  },
+
+  "skillforge": {
+    "name": "SkillForge",
+    "icon": "https://cdn.scalev.id/link-ke-icon-skillforge.png",
+    "url": "https://detama.id/skillforge",
+    "products": [
+      {
+        "id": "kelas-office-pro",
+        "name": "Kelas Office Pro",
+        "badge": "Sertifikasi LKP",
+        "desc": "Kuasai Microsoft Word, Excel, & PPT dari nol hingga mahir. Sertifikat resmi LKP yang diakui untuk pemberkasan kerja.",
+        "image": "https://cdn.scalev.id/uploads/1764757883/Me_cBhGxepINo5sGftuUKA/1764757869143-4a39f09a-d020-4380-9f6d-3e9855415992_image_1.webp",
+        "features": ["60+ Video Modul", "Sertifikat LKP Dikti", "Akses Seumur Hidup"],
+        "price": 35000,
+        "isBundle": false,
+        "demoUrls": { "landing": "https://detama.id/kelasoffice" },
+        "variants": [
+           {
+             "id": "406078",
+             "name": "Lifetime Access",
+             "price": 35000,
+             "sku": "SkillForge - Kelas Office"
+           }
+        ]
+      },
+      {
+        "id": "skillpedia-elite",
+        "name": "SkillPedia Elite",
+        "badge": "Best Seller",
+        "desc": "Panduan taktis Digital Marketing (FB Ads, TikTok, Copywriting). Ubah skill menjadi mesin penghasil profit.",
+        "image": "https://cdn.scalev.id/uploads/1764757891/-dIIPfmzGPO9J3WNLk0X-Q/1764757876580-23516c39-e701-49f4-8ab6-c0ab2b76d37f_image_1.webp",
+        "features": ["Studi Kasus Real", "Database Winning Campaign", "Grup Support"],
+        "price": 35000,
+        "isBundle": false,
+        "demoUrls": { "landing": "https://detama.id/skillpedia" },
+        "variants": [
+           {
+             "id": "406079",
+             "name": "Lifetime Access",
+             "price": 35000,
+             "sku": "SkillForge - SkillPedia"
+           }
+        ]
+      }
+    ],
+    "bundles": [
+      {
+        "id": "26356",
+        "name": "SkillForge Bundle",
+        "desc": "Paket lengkap pegawai masa depan: Administrasi Rapi + Marketing Cuan.",
+        "badge": "Ultimate Package",        
+        "price": 50000,
+        "sku": "[Bundling] SkillForge",
+        "image": "https://cdn.scalev.id/uploads/1764757598/a-Rioq4w0RkAEUlKDE29Gg/1764757583323-5c7bc4f9-3a24-4030-bb22-ee6c703c703d_image_1.webp",
+        "isBundle": true        
+      }
+    ]
+  }
+
+}

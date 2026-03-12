@@ -1,58 +1,45 @@
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
-import https from 'https';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-const CSS_URL = 'https://cdn.detama.id/ScaleMarket.css';
-const JS_URL = 'https://cdn.detama.id/ScaleMarket.js';
-
 const OUT_DIR = path.join(__dirname, '../pages/scalemarket');
 const HTML_OUT = path.join(OUT_DIR, 'index.html');
-const CSS_OUT = path.join(OUT_DIR, 'scalemarket.css');
-const JS_OUT = path.join(OUT_DIR, 'scalemarket-app.js');
 
-const BODY_FILE = path.join(__dirname, 'scalemarket-body.html');
-const CRITICAL_CSS_FILE = path.join(__dirname, 'scalemarket-critical.css');
+// Local component paths extracted from the user's cdn.html
+const CSS_SRC = path.join(__dirname, 'scalemarket-critical.css');
+const JS_SRC = path.join(OUT_DIR, 'scalemarket-app.js'); // The parser wrote it here
+const TEMPLATE_FILE = path.join(OUT_DIR, 'template-full-body.html');
 
-function download(url) {
-  return new Promise((resolve, reject) => {
-    https.get(url, (res) => {
-      let data = '';
-      res.on('data', (chunk) => data += chunk);
-      res.on('end', () => resolve(data));
-      res.on('error', (err) => reject(err));
-    });
-  });
-}
+// Also inject the global head scripts
+const HEAD_SCRIPTS_FILE = path.join(__dirname, '../pages/globals/head-scripts.html');
 
 async function main() {
-  console.log('[*] Starting ScaleMarket extraction...');
+  console.log('[*] Starting ScaleMarket extraction (Local Assembly)...');
   try {
-    const cdnCss = await download(CSS_URL);
-    const cdnJs = await download(JS_URL);
-    fs.writeFileSync(CSS_OUT, cdnCss, 'utf8');
-    fs.writeFileSync(JS_OUT, cdnJs, 'utf8');
-
-    const bodyContent = fs.readFileSync(BODY_FILE, 'utf8');
-    const criticalCss = fs.readFileSync(CRITICAL_CSS_FILE, 'utf8');
+    const cdnCss = fs.readFileSync(CSS_SRC, 'utf8');
+    const cdnJs = fs.readFileSync(JS_SRC, 'utf8');
+    const templateContent = fs.readFileSync(TEMPLATE_FILE, 'utf8');
+    const globalHeadScripts = fs.readFileSync(HEAD_SCRIPTS_FILE, 'utf8');
 
     // Combine into a pure HTML fragment for Scalev Custom HTML
+    // Styles at TOP (with global scripts), Content in MIDDLE, Scripts at BOTTOM
     const htmlFragment = `<!-- ========================================= -->
-<!-- 1. OPTIMIZED ASSETS (Inline CSS)          -->
+<!-- 1. OPTIMIZED ASSETS (Inline CSS & Globals)-->
 <!-- ========================================= -->
-<style>
-${criticalCss.trim()}
 
+${globalHeadScripts.trim()}
+
+<style>
 ${cdnCss.trim()}
 </style>
 
 <!-- ========================================= -->
 <!-- 2. SCALEV COMPONENT HTML BODY             -->
 <!-- ========================================= -->
-${bodyContent.trim()}
+${templateContent.trim()}
 
 <!-- ========================================= -->
 <!-- 3. OPTIMIZED ASSETS (Inline JS)           -->
@@ -62,7 +49,7 @@ ${cdnJs.trim()}
 </script>`;
 
     fs.writeFileSync(HTML_OUT, htmlFragment, 'utf8');
-    console.log('[+] Generated optimized index.html (Pure HTML Fragment)');
+    console.log('[+] Generated optimized index.html (Pure HTML Fragment with Globals)');
   } catch (error) {
     console.error('[!] Extraction failed:', error);
   }

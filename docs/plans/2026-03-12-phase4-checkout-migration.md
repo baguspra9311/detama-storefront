@@ -101,9 +101,10 @@ git commit -m "refactor(checkout): rename CheckoutPage scripts and CSS to checko
 **Step 1: Write Deployment Guide**
 Detailed instructions on pushing assets to production and updating Scalev Builder configurations.
 Specifically:
-- Parent JS/CSS goes to `assets.detama.id/checkout.css` and `assets.detama.id/checkout-app.js`
-- Child JS/CSS goes to `assets.detama.id/checkout-child.js` and `assets.detama.id/checkout-child.css`
-- Scalev Custom Head Script configuration for the Parent (`detama.id/checkout`).
+- `checkout-parent.js` goes to `assets.detama.id/checkout/checkout-parent.js`
+- Child JS/CSS goes to `assets.detama.id/checkout/checkout-child.js` and `assets.detama.id/checkout/checkout-child.css`
+- Scalev Custom Head Script configuration (uses identical globals for Viewport + Anti-Debug).
+- HTML Component (`index.html`) configuration for the Parent (`detama.id/checkout`), highlighting that `<script src="https://assets.detama.id/checkout/checkout-parent.js"></script>` is placed at the very bottom.
 - Scalev Custom Head Script configuration for the Child/Iframe (`kelasnyatama.com/checkout`).
 
 **Step 2: Commit**
